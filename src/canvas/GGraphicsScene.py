@@ -18,7 +18,6 @@ class GGraphicsScene(QtGui.QGraphicsScene):
     and other GGraphicsItem subclasses. It contains the graphs that
     represent a repository.
     """
-    pass
 
     def __init__(self):
         """
