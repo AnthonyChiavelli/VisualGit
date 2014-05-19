@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>gear.png</file>
+        <file alias="Branch">add_branch.png</file>
+        <file>add.png</file>
+        <file>checkout_branch.png</file>
+        <file>commit.png</file>
+        <file>commit 2.png</file>
+        <file>delete.png</file>
+        <file>images.qrc</file>
+        <file>init.png</file>
+        <file>open_repo.png</file>
+        <file>pull.png</file>
+        <file>pull 2.png</file>
+        <file>push.png</file>
+        <file>push 2.png</file>
+        <file>refresh.png</file>
+        <file>revert.png</file>
+        <file>revert 2.png</file>
+        <file>rm_branch.png</file>
+        <file>clone 2.png</file>
+        <file>merge.png</file>
+    </qresource>
+</RCC>
