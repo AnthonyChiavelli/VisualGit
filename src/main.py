@@ -6,7 +6,19 @@ class TestApp(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
 
         # Load and display UI file
-        self.ui = uic.loadUi('/home/kahmali/Development/VisualGit/ui/mainwindow.ui')
+
+        self.ui = uic.loadUi('/home/anthony/dev/projects/VisualGit/ui/mainwindow.ui')
+
+        # Add a graphics scene for the graphics view in our UI
+        scene = QtGui.QGraphicsScene()
+        self.ui.graphicsView.setScene(scene)
+
+        ellipse = QtGui.QGraphicsEllipseItem(None,scene)
+        ellipse.setRect(0.0,0.0,20.0,20.0)
+        ellipse.setFlag(QtGui.QGraphicsItem.ItemIsMovable)
+
+        scene.addItem(ellipse)
+
         self.ui.show()
 
         # Connect testButton's clicked() signal to our testFunc() function
