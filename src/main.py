@@ -18,7 +18,6 @@ class TestApp(QtGui.QMainWindow):
 
         scene.addItem(ellipse)
 
-
         self.ui.show()
 
         # Connect testButton's clicked() signal to our testFunc() function
