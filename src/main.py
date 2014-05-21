@@ -6,7 +6,7 @@ class TestApp(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
 
         # Load and display UI file
-        self.ui = uic.loadUi('/home/anthony/dev/projects/VisualGit/ui/mainwindow.ui')
+        self.ui = uic.loadUi('/home/kahmali/Development/VisualGit/ui/mainwindow.ui')
         self.ui.show()
 
         # Connect testButton's clicked() signal to our testFunc() function
