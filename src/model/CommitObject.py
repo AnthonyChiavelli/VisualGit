@@ -30,7 +30,7 @@ class CommitNode(GitObject):
 
         :param parent_commit: A commit that directly preceded this one
         """
-        self._parents.__add__(parent_commit)
+        self._parents.append(parent_commit)
 
     def add_child(self, child_commit):
         """
@@ -38,7 +38,7 @@ class CommitNode(GitObject):
 
         :param child_commit: A commit that directly followed this one
         """
-        self._children.__add__(child_commit)
+        self._children.append(child_commit)
 
     @property
     def parents(self):

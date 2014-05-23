@@ -9,12 +9,12 @@ class Branch():
     pointing to.
     """
 
-    def __init__(self, name, commitSha):
+    def __init__(self, name, commit_sha):
         """
         Constructor.
         """
         self._name = name
-        self._commitSha = commitSha
+        self._commit_sha = commit_sha
 
     @property
     def name(self):
@@ -31,16 +31,16 @@ class Branch():
         self._name = value
 
     @property
-    def commitSha(self):
+    def commit_sha(self):
         """
         The SHA-1 hash string of the commit this branch is pointing to
         """
-        return self._commitSha
+        return self._commit_sha
 
-    @commitSha.setter
-    def commitSha(self, value):
+    @commit_sha.setter
+    def commit_sha(self, value):
         """
         Set the SHA-1 hash of the commit the branch is pointing at to
         the given value
         """
-        self._commitSha = value
+        self._commit_sha = value

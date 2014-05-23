@@ -14,6 +14,13 @@ class Sha1():
         """
         self._hash_string = hash_string
 
+    def __str__(self):
+        """
+        Returns the SHA-1 hash string
+
+        """
+        return self._hash_string
+
     def get_string_of_length(self, n):
         """
         Returns the first n characters from the hash string

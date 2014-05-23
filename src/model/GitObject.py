@@ -26,14 +26,14 @@ class GitObject():
         Returns the name of the subdirectory this git object is stored in (the first two characters
         of the SHA-1)
         """
-        return self.sha[:2]
+        return self.sha.get_string_of_length(2)
 
     def get_file_name(self):
         """
         Returns the name of the file containing this git object (the last 38 characters of the
         SHA-1)
         """
-        return self.sha[2:41]
+        return str(self.sha)[2:40]
 
     @property
     def sha(self):

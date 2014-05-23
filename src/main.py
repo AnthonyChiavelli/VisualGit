@@ -1,5 +1,7 @@
 import sys
 from PyQt4 import QtGui, QtCore, uic
+from localrepoapi import LocalRepoApi
+
 
 class TestApp(QtGui.QMainWindow):
     def __init__(self):
@@ -11,6 +13,8 @@ class TestApp(QtGui.QMainWindow):
 
         # Connect testButton's clicked() signal to our testFunc() function
         self.connect(self.ui.testButton, QtCore.SIGNAL("clicked()"), testFunc)
+
+        root_commit = LocalRepoApi.get_commit_history("/home/kahmali/Development/VisualGit")
 
 
 def testFunc():
