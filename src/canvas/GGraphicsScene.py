@@ -1,5 +1,9 @@
 from PyQt4 import QtGui
 
+# Graphics properties
+from PyQt4.QtGui import QBrush
+
+CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
 
 class GGraphicsScene(QtGui.QGraphicsScene):
     """
@@ -14,3 +18,13 @@ class GGraphicsScene(QtGui.QGraphicsScene):
     represent a repository.
     """
     pass
+
+    def __init__(self):
+        """
+        Constructor
+
+        Sets basic display options for this canvas
+        """
+        super().__init__()
+
+        self.setBackgroundBrush(QBrush(CANVAS_BACKGROUND_COLOR))
