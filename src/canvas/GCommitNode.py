@@ -71,6 +71,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         else:
             QPainter.setBrush(NODE_UNSELECTED_COLOR)
 
+
         # Render the rectangle
         self.paint_rectangle(QPainter)
 
