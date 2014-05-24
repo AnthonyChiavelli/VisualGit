@@ -1,6 +1,9 @@
 import sys
 from PyQt4 import QtGui, uic
+<<<<<<< HEAD
 from canvas.GCommitNode import GCommitNode
+=======
+>>>>>>> 7ca74b1bb3003ab7fec85b92a8c578e3e77eb736
 from canvas.GGraphicsScene import GGraphicsScene
 
 

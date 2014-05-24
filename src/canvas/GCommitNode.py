@@ -1,5 +1,6 @@
 from PyQt4 import QtGui
 
+<<<<<<< HEAD
 from PyQt4.QtCore import QRectF, QPointF
 from PyQt4.QtGui import QColor, QFont, QFontMetrics
 
@@ -12,7 +13,6 @@ NODE_UNSELECTED_COLOR = QColor(99, 102, 133)
 NODE_TEXT_COLOR = QColor(255, 255, 255)
 NODE_TEXT_FONT_SIZE = 9
 NODE_LABEL_TEXT = 'commit'
-
 
 class GCommitNode(QtGui.QGraphicsItem):
     """
