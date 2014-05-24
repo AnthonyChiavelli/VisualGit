@@ -1,5 +1,6 @@
 import sys
 from PyQt4 import QtGui, uic
+from canvas.GCommitNode import GCommitNode
 from canvas.GGraphicsScene import GGraphicsScene
 
 
@@ -19,6 +20,9 @@ class MainApp(QtGui.QMainWindow):
         ellipse.setRect(0.0, 0.0, 20.0, 20.0)
         ellipse.setFlag(QtGui.QGraphicsItem.ItemIsMovable)
         scene.addItem(ellipse)
+
+        # Test Commit node
+        scene.addItem(GCommitNode())
 
         self.ui.show()
 
