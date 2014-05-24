@@ -71,7 +71,6 @@ class GCommitNode(QtGui.QGraphicsItem):
         else:
             QPainter.setBrush(NODE_UNSELECTED_COLOR)
 
-
         # Render the rectangle
         self.paint_rectangle(QPainter)
 
@@ -82,6 +81,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         logging.getLogger('git_interaction_logger').info("Rendering node")
 
     def paint_rectangle(self, QPainter):
+
         """
         Renders the node rectangle
 
