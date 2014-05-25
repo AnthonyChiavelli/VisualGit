@@ -5,6 +5,7 @@ from PyQt4.QtGui import QBrush
 
 CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
 
+
 class GGraphicsScene(QtGui.QGraphicsScene):
     """
     A QGraphicsScene to display the graphics representation of a repo

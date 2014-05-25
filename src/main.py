@@ -1,5 +1,6 @@
 import sys
 from PyQt4 import QtGui, uic
+from canvas.GBranchLabel import GBranchLabel
 from canvas.GCommitNode import GCommitNode
 from canvas.GGraphicsScene import GGraphicsScene
 
@@ -23,6 +24,7 @@ class MainApp(QtGui.QMainWindow):
 
         # Test Commit node
         scene.addItem(GCommitNode())
+        scene.addItem(GBranchLabel())
 
         self.ui.show()
 
