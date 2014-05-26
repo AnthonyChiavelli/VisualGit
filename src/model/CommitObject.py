@@ -1,7 +1,7 @@
 from model.GitObject import GitObject
 
 
-class CommitNode(GitObject):
+class CommitObject(GitObject):
     """
     A single node in a repository's history.
 
@@ -15,7 +15,7 @@ class CommitNode(GitObject):
         """
         Constructor.
         """
-        super(CommitNode, self).__init__(sha)
+        super(CommitObject, self).__init__(sha)
         self._parents = []
         self._children = []
         self._author = None
