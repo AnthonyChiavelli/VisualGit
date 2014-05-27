@@ -19,6 +19,10 @@ Requirements
 
 Installation
 ============
+Python 3 and pyqt4 are required. These can be installed from the Ubuntu repos as "python3" and "python3-pyqt4" respectively.
+
+At release, this project will be available on the python package index. Use pip or easy-install to install it, and the dependencies will be handled for you.
+
 Installation instructions coming soon.
 
 Usage
