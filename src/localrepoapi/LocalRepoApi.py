@@ -15,7 +15,9 @@ import sys
 from model.Branch import Branch
 from model.CommitObject import CommitObject
 from model.GitObject import GitObject
+from model.GitUser import GitUser
 from model.Sha1 import Sha1
+from datetime import datetime, tzinfo
 
 
 PATH_TO_BRANCHES = "/.git/refs/heads/"
@@ -122,11 +124,11 @@ def get_commit_object(path_to_local_repo, commit_sha, commits_encountered):
         else:
             if line is not EMPTY_LINE:
                 # Get the details about the commit
-                split_line = line.split()
-                keyword = split_line[0]
+                words = line.split()
+                keyword = words[0]
                 if keyword == "parent":
                     # Add a parent to the commit
-                    parent_sha_str = split_line[1]
+                    parent_sha_str = words[1]
                     if parent_sha_str in commits_encountered:
                         # Link the current commit with it's existing parent commit
                         commits_encountered[parent_sha_str].add_child(commit)
@@ -134,6 +136,20 @@ def get_commit_object(path_to_local_repo, commit_sha, commits_encountered):
                     else:
                         # Add a new commit object as the parent of the current commit
                         commit.add_parent(CommitObject(Sha1(parent_sha_str)))
+                if keyword == "author":
+                    # Get the author and date authored
+                    author_name = " ".join(words[1:-3])
+                    author_email = words[-3].strip("<>")
+                    date_authored = datetime.fromtimestamp(int(words[-2]))
+                    commit.author = GitUser(author_name, author_email)
+                    commit.author_date = date_authored
+                if keyword == "committer":
+                    # Get the committer and date committed
+                    committer_name = " ".join(words[1:-3])
+                    committer_email = words[-3].strip("<>")
+                    date_committed = datetime.fromtimestamp(int(words[-2]))
+                    commit.committer = GitUser(committer_name, committer_email)
+                    commit.commit_date = date_committed
             else:
                 # An empty line signifies the commit message is about to begin
                 reading_commit_message = True
