@@ -1,4 +1,4 @@
-from model.GitObject import GitObject
+from git.GitObject import GitObject
 
 
 class CommitObject(GitObject):
