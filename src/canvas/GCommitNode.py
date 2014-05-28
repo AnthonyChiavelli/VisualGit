@@ -1,6 +1,5 @@
 import logging
 from PyQt4 import QtGui
-
 from PyQt4.QtCore import QRectF, QPointF
 from PyQt4.QtGui import QColor, QFont, QFontMetrics
 
