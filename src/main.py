@@ -1,34 +1,28 @@
 import logging
 import os
 import sys
-from PyQt4 import QtGui, uic
-from canvas.GBranchLabel import GBranchLabel
-from canvas.GCommitNode import GCommitNode
-from canvas.GGraphicsScene import GGraphicsScene
+from PyQt4 import QtGui, QtCore, uic
+from git.LocalRepository import LocalRepository
+
+MAIN_UI_FILE = '/home/kahmali/Development/Projects/VisualGit/ui/mainwindow.ui'
+TEST_REPOSITORY = '/home/kahmali/Development/Projects/TestGit'
 
 
-class MainApp(QtGui.QMainWindow):
+class TestApp(QtGui.QMainWindow):
+
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
 
         # Load and display UI file
-        self.ui = uic.loadUi('/home/anthony/dev/projects/VisualGit/ui/mainwindow.ui')
-
-        # Add a graphics scene for the graphics view in our UI
-        scene = GGraphicsScene()
-        self.ui.graphicsView.setScene(scene)
-
-        # Test shape
-        ellipse = QtGui.QGraphicsEllipseItem()
-        ellipse.setRect(0.0, 0.0, 20.0, 20.0)
-        ellipse.setFlag(QtGui.QGraphicsItem.ItemIsMovable)
-        scene.addItem(ellipse)
-
-        # Test Commit node
-        scene.addItem(GCommitNode())
-        scene.addItem(GBranchLabel())
-
+        self.ui = uic.loadUi(MAIN_UI_FILE)
         self.ui.show()
+
+        # Connect testButton's clicked() signal to our testFunc() function
+        self.connect(self.ui.testButton, QtCore.SIGNAL('clicked()'), test_func)
+
+        # Test getting the commit history for a local repository
+        test_repo = LocalRepository(TEST_REPOSITORY)
+        root_commit = test_repo.get_commit_graph()
 
 
 def init_loggers():
@@ -82,13 +76,16 @@ def init_loggers():
     git_interaction_logger.addHandler(git_interaction_logger_handler)
 
 
+def test_func():
+    win.ui.commitMessageTextEdit.setText('Message!')
+
 if __name__ == "__main__":
     # Initialize our logger
     init_loggers()
 
     # Begin the qt application and main window
     app = QtGui.QApplication(sys.argv)
-    win = MainApp()
+    win = TestApp()
 
     # Exit will error code from app
     sys.exit(app.exec_())
