@@ -19,7 +19,7 @@ Requirements
 
 Installation
 ============
-Python 3 and pyqt4 are required. These can be installed from the Ubuntu repos as "python3" and "python3-pyqt4" respectively.
+Python 3 and PyQt4 are required. These can be installed from the Ubuntu repos as "python3" and "python3-qt4" respectively.
 
 At release, this project will be available on the python package index. Use pip or easy-install to install it, and the dependencies will be handled for you.
 
@@ -38,10 +38,11 @@ The API documentation will be available shortly via ReadTheDocs. We are working 
 Features
 ========
 ###Completed
-- Local Repo API
+- LocalRepository
     - Get all branches in a local repo
     - Get the contents of a git object by sha
     - Get complete commit history for a repository
+    - Deserialize a commit object file into a CommitObject
 
 ###Planned
 - Canvas UI
@@ -68,20 +69,45 @@ Features
     - Command output pane
     - Menus
     - Git API interactions
-    - Correct resizing behavior
-    - Staging area shown
-- Local Repo API
-    - Refactor this into the LocalRepository class
-    - Deserialize a commit object file into a CommitObject
+    - Correct resizing behavior on all UI components
+    - Staging area displayed
+- LocalRepository
     - Get tags (lightweight and annotated)
-    - File watcher
-- Git API
-    - All basic git commands, with options (detailed list coming soon)
-    - Return useful data, including error messages
+    - File modification event listener for refresh alert
+- Git API (our python library for running git commands)
+    - Return all pertinent, deserialized data, including error messages
+    - Setup/Config
+        - init
+        - clone
+        - config
+        - help
+    - Snapshotting
+        - add
+        - commit
+        - diff
+        - status
+    - Branching
+        - branch
+        - checkout
+        - log
+        - merge
+        - stash
+        - tag
+    - Sharing
+        - fetch
+        - pull
+        - push
+    - Patching
+        - rebase
+        - interactive rebase
+    - Misc
+        - grep
+        - cat-file
 - Github API
     - Use requests library
     - Get collaborator info
     - Get repo usage data
+    - Get any other interesting API data
 
 
 Contributing
