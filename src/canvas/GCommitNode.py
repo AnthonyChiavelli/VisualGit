@@ -1,3 +1,4 @@
+import logging
 from PyQt4 import QtGui
 
 from PyQt4.QtCore import QRectF, QPointF
@@ -60,7 +61,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         """
         Performs the rendering of the object
 
-        The QPainterObect passed in contains method for drawing various
+        The QPainterObject passed in contains method for drawing various
         shapes, which will then appear on the canvas.
         """
 
@@ -71,19 +72,23 @@ class GCommitNode(QtGui.QGraphicsItem):
             QPainter.setBrush(NODE_UNSELECTED_COLOR)
 
         # Render the rectangle
-        self.paint_rectange(QPainter)
+        self.paint_rectangle(QPainter)
 
         # Render the node text
         self.paint_text(QPainter)
 
-    def paint_rectange(self, QPainter):
+        logging.getLogger('app_logger').info("Rendering node")
+        logging.getLogger('git_interaction_logger').info("Rendering node")
+
+    def paint_rectangle(self, QPainter):
         """
         Renders the node rectangle
 
         :param QPainter: interface to the canvas
         """
 
-        QPainter.drawRoundedRect(0, 0, NODE_WIDTH, NODE_HEIGHT, NODE_CORNER_RADIUS, NODE_CORNER_RADIUS)
+        QPainter.drawRoundedRect(0, 0, NODE_WIDTH, NODE_HEIGHT, NODE_CORNER_RADIUS,
+                                 NODE_CORNER_RADIUS)
 
     def paint_text(self, QPainter):
         """

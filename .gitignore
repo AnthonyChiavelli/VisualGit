@@ -84,3 +84,6 @@ docs/_build/
 
 # KDE directory preferences
 .directory
+
+# Log files
+logs
