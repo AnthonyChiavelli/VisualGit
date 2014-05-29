@@ -13,31 +13,25 @@ class GitObject():
     organized into directories corresponding to the first two
     characters of the object's SHA-1 hash, and file names corresponding
     to the last 38 characters of the SHA-1.
+
+    Attributes:
+        sha: The SHA-1 hash string used to identify this git object.
     """
 
     def __init__(self, sha):
-        """
-        Constructor.
-        """
-        self._sha = sha
+        """Constructor."""
+        self.sha = sha
 
     def get_subdirectory_name(self):
         """
-        Returns the name of the subdirectory this git object is stored in (the first two characters
-        of the SHA-1)
+        Return the name of the subdirectory this git object is stored
+        in (the first two characters of the SHA-1).
         """
         return self.sha.get_string_of_length(2)
 
     def get_file_name(self):
         """
-        Returns the name of the file containing this git object (the last 38 characters of the
-        SHA-1)
+        Return the name of the file containing this git object (the
+        last 38 characters of the SHA-1).
         """
         return str(self.sha)[2:40]
-
-    @property
-    def sha(self):
-        """
-        The SHA-1 hash string used to identify this git object.
-        """
-        return self._sha

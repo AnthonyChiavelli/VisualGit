@@ -4,7 +4,7 @@ import zlib
 import sys
 
 from git.Branch import Branch
-from git.CommitObject import CommitObject
+from git.Commit import Commit
 from git.GitObject import GitObject
 from git.GitUser import GitUser
 from git.Sha1 import Sha1
@@ -48,9 +48,7 @@ class LocalRepository():
     """
 
     def __init__(self, path):
-        """
-        Constructor.
-        """
+        """Constructor."""
         self.path = path
         self.rootcommit = None
         self.branches = []
@@ -74,7 +72,7 @@ class LocalRepository():
 
     def get_all_local_branches(self):
         """
-        Return a list of all local Branches
+        Return a list of all local Branches.
         """
         branchlist = []
         for branch_filename in os.listdir(self.path + PATH_TO_BRANCHES):
@@ -116,14 +114,14 @@ class LocalRepository():
 
         :param commit_sha: The SHA-1 hash of the commit object to
             retrieve.
-        :return The CommitObject with the given SHA-1
+        :return The CommitObject with the given SHA-1.
         """
 
         # Get the decompressed contents of the commit object file
         commit_obj_file_contents = self.get_git_object_contents(commit_sha)
 
         # Deserialize the contents of the commit file
-        commit = CommitObject(commit_sha)
+        commit = Commit(commit_sha)
         commit_message = ""
         reading_commit_message = False
         for line in commit_obj_file_contents.splitlines(True):
@@ -143,7 +141,7 @@ class LocalRepository():
                             commit.add_parent(self.commits[parent_sha_str])
                         else:
                             # Add a new commit object as the parent of the current commit
-                            commit.add_parent(CommitObject(Sha1(parent_sha_str)))
+                            commit.add_parent(Commit(Sha1(parent_sha_str)))
                     if keyword == "author":
                         # Get the author and date authored
                         author_name = " ".join(words[1:-3])
@@ -168,7 +166,7 @@ class LocalRepository():
 
     def get_commit_history(self, commit_sha, child_commit=None):
         """
-        Assemble the commit history for the commit with the given SHA-1
+        Assemble the commit history for the commit with the given SHA-1.
 
         :param child_commit: The child we got to this commit from, if
             any. This is used to allow linking in both directions (from
@@ -201,7 +199,7 @@ class LocalRepository():
         Assemble and return the complete commit history for this local
         repository.
 
-        :return The CommitObject at the root of the commit graph
+        :return The CommitObject at the root of the commit graph.
         """
 
         # Get a list of all the local branches

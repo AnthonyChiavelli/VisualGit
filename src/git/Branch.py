@@ -7,40 +7,13 @@ class Branch():
     .git/refs/heads directory. They are stored by name, with each
     file containing the SHA-1 hash of the commit the branch is
     pointing to.
+
+    Attributes:
+        name: A string identifying this Branch.
+        commit_sha: The Sha1 of the commit this branch is pointing to.
     """
 
     def __init__(self, name, commit_sha):
-        """
-        Constructor.
-        """
-        self._name = name
-        self._commit_sha = commit_sha
-
-    @property
-    def name(self):
-        """
-        The name of this branch
-        """
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        """
-        Set the name of the branch to the given value
-        """
-        self._name = value
-
-    @property
-    def commit_sha(self):
-        """
-        The SHA-1 hash string of the commit this branch is pointing to
-        """
-        return self._commit_sha
-
-    @commit_sha.setter
-    def commit_sha(self, value):
-        """
-        Set the SHA-1 hash of the commit the branch is pointing at to
-        the given value
-        """
-        self._commit_sha = value
+        """Constructor."""
+        self.name = name
+        self.commit_sha = commit_sha
