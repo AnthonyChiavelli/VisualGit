@@ -35,6 +35,14 @@ API Documentation
 =================
 The API documentation will be available shortly via ReadTheDocs. We are working to get it up and running as soon as possible. Please excuse our shortcomings in the meantime (sorry, we're Sphinx noobs).
 
+Contributions
+=============
+We welcome contributions with open arms! For detailed information on how you can contribute to this project, please read our [Python Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html). It has all you need to know about how to prepare your code for submission. Even if we know and like you, if your code isn't up to spec, it's not touching this repository!
+
+Communication
+=============
+As noted in our [Coding Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html), [GitHub Issues](https://github.com/AnthonyReid99/VisualGit/issues) will be the primary means of communication for this project. Whether it be a question, comment, bug report. feature request, or anything else involving the project, it would be best to keep our discussion there. We love feedback, so head on over there whenever the mood strikes you and let us know how you feel!
+
 Features
 ========
 ###Completed
@@ -76,56 +84,25 @@ Features
     - File modification event listener for refresh alert
 - Git API (our python library for running git commands)
     - Return all pertinent, deserialized data, including error messages
-    - Setup/Config
-        - init
-        - clone
-        - config
-        - help
-    - Snapshotting
-        - add
-        - commit
-        - diff
-        - status
-    - Branching
-        - branch
-        - checkout
-        - log
-        - merge
-        - stash
-        - tag
-    - Sharing
-        - fetch
-        - pull
-        - push
-    - Patching
-        - rebase
-        - interactive rebase
-    - Misc
-        - grep
-        - cat-file
-- Github API
+    - Git commands supported
+        - **Setup/Config:** init, clone, config, help
+        - **Snapshotting:** add, commit, diff, status
+        - **Branching:** branch, checkout, log, merge, stash, tag
+        - **Sharing:** fetch, pull, push,
+        - **Patching:** rebase, interactive rebase
+        - **Misc:** grep, cat-file, show
+- GitHub API
     - Use requests library
     - Get collaborator info
     - Get repo usage data
     - Get any other interesting API data
 
-
-Contributing
-============
-We welcome contributions with open arms! Well, not _too_ open... For detailed information on how to contribute to this project, please read our [Coding Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html). It has all you need to know about how to prepare your code for submission. Even if we know you and like you, if your code isn't up to spec, it's not touching this repository!
-
-Communication
-=============
-As noted in our [Coding Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html), [GitHub Issues](https://github.com/AnthonyReid99/VisualGit/issues) will be the primary means of communication for this project. Whether it be a question, comment, bug report. feature request, or anything else involving the project, it would be best to keep our discussion there. We love feedback, so head on over there whenever the mood strikes you and let us know how you feel!
-
 About the Team
 ==============
-Visual Git is currently being developed by a group of Computer Science students from UMass Boston, but we hope to have contributors from all over the world someday! Credit to Anthony Reid for the initial idea.
+Visual Git is currently being developed by a group of Computer Science students from UMass Boston, but we hope to have contributors from all over the world someday! Credit to Anthony Reid for the idea.
 
-See a complete list of contributors [here](https://github.com/AnthonyReid99/VisualGit/graphs/contributors).
+Check out a complete list of contributors [here](https://github.com/AnthonyReid99/VisualGit/graphs/contributors).
 
 License
 =======
-GNU General Public License. See LICENSE for more information.
-
-This is a free, open-source project.
+This is a free, open-source project under the GNU General Public License. See LICENSE for more information.
