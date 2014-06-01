@@ -1,3 +1,6 @@
+from git.Commit import Commit
+
+
 class Branch():
     """
     A reference to a commit
@@ -29,22 +32,30 @@ class Branch():
         Return true if this branch has the same name and points to the
         same commit as the other
 
+        Check equality directly against Commits, also.
+
         :param other: The Branch to compare this to
         """
         if isinstance(other, Branch):
             return self.name == other.name and self.commit_sha == other.commit_sha
+        elif isinstance(other, Commit):
+            return self.commit_sha == other.sha
         else:
             return NotImplemented
 
     def __ne__(self, other):
         """
         Return true if this branch has a different name or points to a
-        different commit
+        different commit than the other
+
+        Check inequality directly against Commits, also.
 
         :param other: The Branch to compare this to
         """
         if isinstance(other, Branch):
             return self.name != other.name or self.commit_sha != other.commit_sha
+        elif isinstance(other, Commit):
+            return self.commit_sha != other.sha
         else:
             return NotImplemented
 
