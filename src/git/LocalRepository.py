@@ -26,7 +26,7 @@ logger.addHandler(ch)
 class LocalRepository():
     """
     All files and file history associated with git are stored in the
-    git directory (or local repository) for a project.
+    git directory (or local repository) for a project
 
     When a git repository is initialized in a directory (using the git
     init command), a .git/ directory is created there, and all files
@@ -48,7 +48,7 @@ class LocalRepository():
     """
 
     def __init__(self, path):
-        """Constructor."""
+        """Constructor"""
         self.path = path
         self.rootcommit = None
         self.branches = []
@@ -57,9 +57,9 @@ class LocalRepository():
 
     def get_local_branch(self, branch_name):
         """
-        Return the local Branch with the given name.
+        Return the local Branch with the given name
 
-        :param branch_name: The name of the branch to be retrieved.
+        :param branch_name: The name of the branch to be retrieved
         """
         # Get the SHA-1 of the commit the given branch points to
         branch_file_contents = open(
@@ -72,7 +72,7 @@ class LocalRepository():
 
     def get_all_local_branches(self):
         """
-        Return a list of all local Branches.
+        Return a list of all local branches
         """
         branchlist = []
         for branch_filename in os.listdir(self.path + PATH_TO_BRANCHES):
@@ -83,10 +83,10 @@ class LocalRepository():
     def get_git_object_contents(self, git_obj_sha):
         """
          Return the decompressed contents of the git object with the
-         given SHA-1.
+         given SHA-1
 
         :param git_obj_sha: The SHA-1 hash of the git object to be
-            fetched.
+            fetched
         """
 
         git_obj = GitObject(git_obj_sha)
@@ -99,7 +99,7 @@ class LocalRepository():
 
     def get_commit_object(self, commit_sha):
         """
-        Deserialize the commit object file contents.
+        Deserialize the given commit object file contents
 
         Commit object file contents are in the form::
 
@@ -113,8 +113,8 @@ class LocalRepository():
 
 
         :param commit_sha: The SHA-1 hash of the commit object to
-            retrieve.
-        :return The CommitObject with the given SHA-1.
+            retrieve
+        :return The CommitObject with the given SHA-1
         """
 
         # Get the decompressed contents of the commit object file
@@ -155,7 +155,7 @@ class LocalRepository():
                         committer_email = words[-3].strip("<>")
                         date_committed = datetime.fromtimestamp(int(words[-2]))
                         commit.committer = GitUser(committer_name, committer_email)
-                        commit.commit_date = date_committed
+                        commit.date_committed = date_committed
                 else:
                     # An empty line signifies the commit message is about to begin
                     reading_commit_message = True
@@ -166,7 +166,7 @@ class LocalRepository():
 
     def get_commit_history(self, commit_sha, child_commit=None):
         """
-        Assemble the commit history for the commit with the given SHA-1.
+        Assemble the commit history for the commit with the given SHA-1
 
         :param child_commit: The child we got to this commit from, if
             any. This is used to allow linking in both directions (from
@@ -197,9 +197,9 @@ class LocalRepository():
     def get_commit_graph(self):
         """
         Assemble and return the complete commit history for this local
-        repository.
+        repository
 
-        :return The CommitObject at the root of the commit graph.
+        :return The CommitObject at the root of the commit graph
         """
 
         # Get a list of all the local branches

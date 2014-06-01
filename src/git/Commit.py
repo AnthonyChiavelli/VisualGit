@@ -3,7 +3,7 @@ from git.GitObject import GitObject
 
 class Commit(GitObject):
     """
-    A single node in a repository's history.
+    A single node in a repository's history
 
     A commit is a set of changes, or patch, that is applied to a
     repository. This node contains only the history information,
@@ -36,7 +36,7 @@ class Commit(GitObject):
         self.author = None
         self.author_date = None
         self.committer = None
-        self.commit_date = None
+        self.date_committed = None
         self.message = None
 
     def add_parent(self, parent_commit):
@@ -54,3 +54,64 @@ class Commit(GitObject):
         :param child_commit: A commit that directly followed this one
         """
         self.children.append(child_commit)
+
+    def __eq__(self, other):
+        """
+        Return True if this commit has the same SHA-1 hash as the other
+
+        :param other: The Commit to compare this to
+        """
+        if isinstance(other, Commit):
+            return self.sha == other.sha
+        else:
+            return NotImplemented
+
+    def __ne__(self, other):
+        """
+        Return True if this commit has a different SHA-1 hash as the other
+
+        :param other: The commit to compare this to
+        """
+        if isinstance(other, Commit):
+            return self.sha != other.sha
+        else:
+            return NotImplemented
+
+    def __gt__(self, other):
+        """
+        Return True if this commit came after the other,
+            chronologically
+
+        :param other: The commit to compare this to
+        """
+        return self.date_committed > other.date_committed
+
+    def __ge__(self, other):
+        """
+        Return True if this commit came after or at the same time as
+        the other
+
+        :param other: The commit to compare this to
+        """
+        return self.date_committed >= other.date_committed
+
+    def __lt__(self, other):
+        """
+        Return True if this commit came before the other,
+            chronologically
+
+        :param other: The commit to compare this to
+        """
+        return self.date_committed < other.date_committed
+
+    def __le__(self, other):
+        """
+        Return True if this commit came before or at the same time as
+        the other
+
+        :param other: The commit to compare this to
+        """
+        return self.date_committed <= other.date_committed
+
+    def __hash__(self):
+        return hash(self.sha)

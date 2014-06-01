@@ -5,7 +5,7 @@ from git.Tag import Tag
 class AnnotatedTag(Tag):
     """
     A permanent reference to a commit, stored as an object in the git
-    database.
+    database
 
     Attributes:
         sha: The Sha1 identifier for this tag.
@@ -17,7 +17,7 @@ class AnnotatedTag(Tag):
     """
 
     def __init__(self, sha, name="", commit_sha=None, tagger=None, date_tagged=None, message=None):
-        """Constructor."""
+        """Constructor"""
         Tag.__init__(self, name, commit_sha)
         self.sha = sha
         self.tagger = tagger
