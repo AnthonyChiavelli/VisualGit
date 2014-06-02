@@ -68,8 +68,6 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         """
         Render the line
 
-        Performs the rendering of the item.
-
-
+        :param QPainter: Our interface to the canvas
         """
         pass

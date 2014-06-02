@@ -1,8 +1,8 @@
+from canvas import rendering_algorithms
 from PyQt4 import QtGui
+from canvas import GCommitNode
 
 # Graphics properties
-from PyQt4.QtGui import QBrush
-
 CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
 
 
@@ -33,7 +33,6 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # node twice (as it may be a child of multiple parents)
         self.sha_to_node = {}
 
-
     def render_scene(self, commit):
         """
         Renders the various elements of the canvas
@@ -46,15 +45,13 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         """
 
         # Convert our Commit tree to a tree of GCommitNode objects
+        root_g_commit_node = self._node_tree_from_commit(commit)
 
+        # Measure layout of tree with chosen algorithm
+        rendering_algorithms.minimum_width(root_g_commit_node)
 
-        # Generate graphical tree from root commit using chosen
-        # algorithm
-        # TODO
+        # Render commits onto canvas
         self._render_commits(None)
-
-        # Render labels
-        # TODO
 
     def _render_commits(self, g_commit_node):
         """
@@ -74,7 +71,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # Recursively call on its children to be added to scene
         map(self._render_commits, g_commit_node.children)
 
-    def node_tree_from_commit(self, commit, parent = None):
+    def _node_tree_from_commit(self, commit, parent = None):
         """
         Converts a Commit tree into a GCommitNode tree
 
@@ -104,7 +101,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # children set
         if commit.children:
             for commit_child in commit.children:
-                new_g_commit_node = self.node_tree_from_commit(commit_child, g_commit_node)
+                new_g_commit_node = self._node_tree_from_commit(commit_child, g_commit_node)
                 g_commit_node.children.append(new_g_commit_node)
             # TODO handle arrows
 

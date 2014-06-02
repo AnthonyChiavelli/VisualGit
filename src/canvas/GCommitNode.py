@@ -25,26 +25,32 @@ class GCommitNode(QtGui.QGraphicsItem):
 
     Inside a GCommitNode, there are two strings, a string labeling this
     as a commit, and a sha string, showing the sha of the commit.
+
+    Attributes:
+        commit: The underlying Commit that this node represents
+        children: A list of our children GCommitNodes
+        parents: A List of our parent GCommitNodes
+
     """
 
-    def __init__(self, commit_node=None):
+    def __init__(self, commit=None):
         """
         Constructor
 
         Sets up the properties of the node
 
-        :param commit_node: the CommitNode this GCommitNode represents
+        :param commit: the CommitNode this GCommitNode represents
         """
 
         super().__init__()
-        self._commit_node = commit_node
+
+        self.commit = commit
+        self.children = []
+        self.parents = []
+
+        # Ensure that object can be selected and dragged around
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
         self.setFlag(QtGui.QGraphicsItem.ItemIsSelectable, True)
-
-    @property
-    def commit_node(self):
-        """ The commit node that this represents """
-        return self._commit_node
 
     def boundingRect(self):
         """

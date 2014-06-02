@@ -20,7 +20,6 @@ because git repos are usually mostly tree-like, and many people prefer
 to visualize them in a hierarchy, we still opt to use tree-drawing
 strategies and make the necessary corrections.
 """
-from canvas import GCommitNode
 
 
 def minimum_width(root_commit):
@@ -42,20 +41,17 @@ def minimum_width(root_commit):
     _minimum_width(root_commit)
 
 
-def _minimum_width(commit, next_x_slots=[0], depth=0):
+def _minimum_width(g_commit_node, next_x_slots=[0], depth=0):
     """
     Helper function for minimum_width()
 
     This helper function performs the actual rendering.
 
-    :param commit: The current commit being processed
+    :param g_commit_node: The current GCommitNode being processed
     :param next_x_slots: Keeps track of the next available x position
         for each row
     :param depth: the depth of the current commit being processed
     """
-
-    # Wrap this Commit in a GCommitNode
-    g_commit_node = GCommitNode(commit)
 
     # Position based on depth (y) and left-most available column (x)
     x_spacing, y_spacing = 100, 100  # TODO accept as setting parameter
@@ -66,11 +62,7 @@ def _minimum_width(commit, next_x_slots=[0], depth=0):
     # Column at this depth was used, move on to next one
     next_x_slots[depth] += 1
 
-    for child in commit.children:
-
-
-
-
-
-
-
+    # Draw children at next lower level
+    for child in g_commit_node.children:
+        next_x_slots.append(0)
+        _minimum_width(child, next_x_slots, depth + 1)
