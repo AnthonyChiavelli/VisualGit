@@ -1,8 +1,12 @@
+import sys
+
 from canvas import rendering_algorithms
 from PyQt4 import QtGui
-from canvas import GCommitNode
+from canvas.GCommitNode import GCommitNode
 
 # Graphics properties
+from git.Commit import Commit
+
 CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
 
 
@@ -31,7 +35,31 @@ class GGraphicsScene(QtGui.QGraphicsScene):
 
         # A mapping of sha to GCommitNode to avoid redrawing the same
         # node twice (as it may be a child of multiple parents)
-        self.sha_to_node = {}
+        self._sha_to_node = {}
+
+        a = Commit("a")
+        b = Commit("b")
+        c = Commit("c")
+        a.children.append(b)
+        a.children.append(c)
+        b.parents.append(a)
+        c.parents.append(a)
+
+        d = Commit("d")
+        e = Commit("e")
+        c.children.append(d)
+        c.children.append(e)
+        d.parents.append(c)
+        e.parents.append(c)
+
+        f = Commit("f")
+        g = Commit("g")
+        e.children.append(f)
+        e.children.append(g)
+        f.parents.append(e)
+        g.parents.append(e)
+
+        self.render_scene(a)
 
     def render_scene(self, commit):
         """
@@ -51,7 +79,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         rendering_algorithms.minimum_width(root_g_commit_node)
 
         # Render commits onto canvas
-        self._render_commits(None)
+        self._render_commits(root_g_commit_node)
 
     def _render_commits(self, g_commit_node):
         """
@@ -69,9 +97,10 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         self.addItem(g_commit_node)
 
         # Recursively call on its children to be added to scene
-        map(self._render_commits, g_commit_node.children)
+        for child in g_commit_node.children:
+            self._render_commits(child)
 
-    def _node_tree_from_commit(self, commit, parent = None):
+    def _node_tree_from_commit(self, commit, parent=None):
         """
         Converts a Commit tree into a GCommitNode tree
 
@@ -86,8 +115,8 @@ class GGraphicsScene(QtGui.QGraphicsScene):
 
         # Make sure we haven't already processed this commit (via
         # another parent)
-        if commit.sha in self.sha_to_node:
-            g_commit_node = self.sha_to_node[commit.sha]
+        if commit.sha in self._sha_to_node:
+            g_commit_node = self._sha_to_node[commit.sha]
         # Otherwise we need a new one
         else:
             g_commit_node = GCommitNode(commit)
@@ -99,14 +128,16 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # If our commit has children, recursively call ourselves
         # on each child and add the gcommitnode returned to our
         # children set
-        if commit.children:
+        if len(commit.children) != 0:
             for commit_child in commit.children:
                 new_g_commit_node = self._node_tree_from_commit(commit_child, g_commit_node)
                 g_commit_node.children.append(new_g_commit_node)
-            # TODO handle arrows
+
+
+
 
         # Add this to our global mapping of shas to gcommitnodes
-        self.sha_to_node[commit.sha] = g_commit_node
+        self._sha_to_node[commit.sha] = g_commit_node
 
         # Return newly converted gcommitnode
         return g_commit_node
