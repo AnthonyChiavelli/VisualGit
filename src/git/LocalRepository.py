@@ -1,11 +1,13 @@
 import logging
 import os
+import string
 import zlib
 import sys
 
 from git.Branch import Branch
 from git.Commit import Commit
 from git.GitObject import GitObject
+from git.GitTerminal import GitTerminal
 from git.GitUser import GitUser
 from git.Sha1 import Sha1
 from datetime import datetime
@@ -25,6 +27,8 @@ logger.addHandler(ch)
 
 class LocalRepository():
     """
+    .. _LocalRepository:
+
     All files and file history associated with git are stored in the
     git directory (or local repository) for a project
 
@@ -66,7 +70,7 @@ class LocalRepository():
             self.path + PATH_TO_BRANCHES + "/" + branch_name).read()
         branch = Branch(branch_name, Sha1(branch_file_contents))
         logger.debug("Found a local branch " + branch.name + " pointing to commit " +
-                     str(branch.commit_sha)[:8])
+                     branch.commit_sha[:8])
 
         return branch
 
@@ -94,7 +98,7 @@ class LocalRepository():
                                 git_obj.get_subdirectory_name() + "/" +
                                 git_obj.get_file_name(), "rb").read()
         git_obj_contents = zlib.decompress(git_obj_contents).decode()
-        logger.debug("Git object " + str(git_obj_sha)[:8] + " contents:\n" + git_obj_contents)
+        logger.debug("Git object " + git_obj_sha[:8] + " contents:\n" + git_obj_contents)
         return git_obj_contents
 
     def get_commit_object(self, commit_sha):
@@ -118,7 +122,8 @@ class LocalRepository():
         """
 
         # Get the decompressed contents of the commit object file
-        commit_obj_file_contents = self.get_git_object_contents(commit_sha)
+        git_terminal = GitTerminal(self.path)
+        commit_obj_file_contents = git_terminal.show_git_objects_contents(commit_sha)
 
         # Deserialize the contents of the commit file
         commit = Commit(commit_sha)
@@ -128,7 +133,7 @@ class LocalRepository():
             if reading_commit_message:
                 commit_message += str(line)
             else:
-                if line is not EMPTY_LINE:
+                if not line.isspace():
                     # Get the details about the commit
                     words = line.split()
                     keyword = words[0]
@@ -175,14 +180,14 @@ class LocalRepository():
 
         # Get the commit object with the given SHA-1
         current_commit = self.get_commit_object(commit_sha)
-        self.commits[str(current_commit.sha)] = current_commit
-        logger.debug("Getting history for commit " + str(current_commit.sha)[:8])
+        self.commits[current_commit.sha.name] = current_commit
+        logger.debug("Getting history for commit " + current_commit.sha[:8])
 
         # Add the given child, if any, to the current commit
         if child_commit is not None:
             current_commit.add_child(child_commit)
-            logger.debug("Added child commit " + str(child_commit.sha)[:8] + " to commit " +
-                         str(current_commit.sha)[:8])
+            logger.debug("Added child commit " + child_commit.sha[:8] + " to commit " +
+                         current_commit.sha[:8])
 
         # Get the commit history for each parent
         if current_commit.parents:
@@ -192,7 +197,7 @@ class LocalRepository():
         else:
             # Current commit is the root
             self.rootcommit = current_commit
-            logger.debug("Found root commit " + str(self.rootcommit.sha)[:8])
+            logger.debug("Found root commit " + self.rootcommit.sha[:8])
 
     def get_commit_graph(self):
         """
@@ -209,9 +214,9 @@ class LocalRepository():
         self.rootcommit = None
         self.commits = {}
         for branch in self.branches:
-            if str(branch.commit_sha) not in self.commits:
+            if branch.commit_sha.name not in self.commits:
                 logger.debug("Getting commit history for branch " + branch.name + " at commit " +
-                             str(branch.commit_sha)[:8])
+                             branch.commit_sha[:8])
                 self.get_commit_history(branch.commit_sha)
 
         return self.rootcommit

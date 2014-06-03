@@ -35,7 +35,7 @@ class Sha1():
         """
         Return the string representation of this SHA-1 hash
         """
-        return "Sha1({0})".format(self.name)
+        return self.name
 
     def __eq__(self, other):
         """
