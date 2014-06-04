@@ -1,12 +1,11 @@
-import sys
-
+import canvas.GConnectionLine
 from canvas import rendering_algorithms
 from PyQt4 import QtGui
+from canvas.GCommitArrow import GCommitArrow
 from canvas.GCommitNode import GCommitNode
-
-# Graphics properties
 from git.Commit import Commit
 
+# Graphics properties
 CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
 
 
@@ -96,8 +95,16 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # Add this node to the scene
         self.addItem(g_commit_node)
 
-        # Recursively call on its children to be added to scene
+        # For each child node
         for child in g_commit_node.children:
+            # Render an arrow from child to parent
+            commit_arrow = GCommitArrow(child,
+                                        canvas.GConnectionLine.ATTACH_MODE_TOP,
+                                        g_commit_node,
+                                        canvas.GConnectionLine.ATTACH_MODE_BOTTOM)
+            self.addItem(commit_arrow)
+
+            # And recursively render child
             self._render_commits(child)
 
     def _node_tree_from_commit(self, commit, parent=None):

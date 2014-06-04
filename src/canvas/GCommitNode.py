@@ -103,8 +103,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         :param QPainter: interface to the canvas
         """
 
-        #TODO remove
-        temp_commit_sha = "4"
+        commit_sha = self.commit.sha
 
         # Set up font and text settings
         text_font = QFont()
@@ -115,7 +114,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         # Measure size of strings so they can be centered properly
         font_metrics = QFontMetrics(text_font)
         label_text_width = font_metrics.width(NODE_LABEL_TEXT)
-        sha_text_width = font_metrics.width(temp_commit_sha)
+        sha_text_width = font_metrics.width(commit_sha)
 
         # Position and render text
         label_margin = (NODE_WIDTH - label_text_width) / 2
@@ -123,4 +122,4 @@ class GCommitNode(QtGui.QGraphicsItem):
         QPainter.drawText(label_position, NODE_LABEL_TEXT)
         sha_margin = (NODE_WIDTH - sha_text_width) / 2
         sha_position = QPointF(sha_margin, 25)
-        QPainter.drawText(sha_position, temp_commit_sha)
+        QPainter.drawText(sha_position, commit_sha)

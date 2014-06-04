@@ -1,6 +1,8 @@
 from PyQt4 import QtGui
 
 # Constants defining line attachment strategies
+from PyQt4.QtCore import QLineF, QPointF
+
 ATTACH_MODE_TOP = 1
 ATTACH_MODE_BOTTOM = 2
 ATTACH_MODE_LEFT = 4
@@ -46,10 +48,15 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         :param destination_attach_mode: How the line will attach to its
             destination.
         """
+
+        super().__init__()
+
         self._origin = origin
         self._origin_attach_mode = origin_attach_mode
         self._destination = destination
-        self._destination_attach_node = destination_attach_mode
+        self._destination_attach_mode = destination_attach_mode
+        self._line = None
+        self._origin_point = None
 
     def paint(self, QPainter, QStyleOptionGraphicsItem, QWidget_widget=None):
         """
@@ -62,12 +69,49 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         """
 
         # Render the line
-        self.render_line(QPainter)
+        self._render_line(QPainter)
 
-    def render_line(QPainter):
+    def _render_line(self, QPainter):
         """
         Render the line
 
         :param QPainter: Our interface to the canvas
         """
-        pass
+
+        # Calculate the starting and ending points
+        self._origin_point = self._calculate_attachment_point(self._origin, self._origin_attach_mode)
+        destination_point = self._calculate_attachment_point(self._destination,
+                                                             self._destination_attach_mode)
+
+        # Render a line from the origin to the destination
+        self._line = QLineF(self._origin_point, destination_point)
+        QPainter.drawLine(self._line)
+
+    def _calculate_attachment_point(self, node, attach_mode):
+        """
+        Calculate the point on the given node to attach to
+
+        Point will be chosen based on the attach_mode supplied
+        """
+
+        node_x_left = node.sceneBoundingRect().left()
+
+        if attach_mode == ATTACH_MODE_BOTTOM:
+            node_x_mid = node_x_left + (node.boundingRect().width() / 2)
+            node_y_bottom = node.sceneBoundingRect().bottom()
+            return QPointF(node_x_mid, node_y_bottom)
+
+        node_y_top = node.sceneBoundingRect().top()
+
+        if attach_mode == ATTACH_MODE_TOP:
+            node_x_mid = node_x_left + (node.boundingRect().width() / 2)
+            return QPointF(node_x_mid, node_y_top)
+
+        if attach_mode == ATTACH_MODE_LEFT:
+            node_y_mid = node_y_top + (node.boundingRect().height() / 2)
+            return QPointF(node_x_left, node_y_mid)
+
+        if attach_mode == ATTACH_MODE_RIGHT:
+            node_y_mid = node_y_top + (node.boundingRect().height() / 2)
+            node_x_right = node.sceneBoundingRect().right()
+            return QPointF(node_x_right, node_y_mid)
