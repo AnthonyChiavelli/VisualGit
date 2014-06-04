@@ -104,6 +104,10 @@ class GGraphicsScene(QtGui.QGraphicsScene):
                                         canvas.GConnectionLine.ATTACH_MODE_BOTTOM)
             self.addItem(commit_arrow)
 
+            # Add this arrow to the touching arrow lists of both commits
+            g_commit_node.touching_arrows.append(commit_arrow)
+            child.touching_arrows.append(commit_arrow)
+
             # And recursively render child
             self._render_commits(child)
 

@@ -48,9 +48,14 @@ class GCommitNode(QtGui.QGraphicsItem):
         self.children = []
         self.parents = []
 
+        # Keep track of arrows that should be redrawn when this node
+        # moves
+        self.touching_arrows = []
+
         # Ensure that object can be selected and dragged around
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
         self.setFlag(QtGui.QGraphicsItem.ItemIsSelectable, True)
+        self.setFlag(QtGui.QGraphicsItem.ItemSendsGeometryChanges, True)
 
     def boundingRect(self):
         """
@@ -123,3 +128,20 @@ class GCommitNode(QtGui.QGraphicsItem):
         sha_margin = (NODE_WIDTH - sha_text_width) / 2
         sha_position = QPointF(sha_margin, 25)
         QPainter.drawText(sha_position, commit_sha)
+
+    def itemChange(self, change, p_object):
+        """
+        Called when there is a change of some sort to this item
+
+        GraphicsItemChange contains a value indicating the nature of
+        the change
+        """
+
+        # If we've been moved
+        if change == QtGui.QGraphicsItem.ItemPositionChange:
+            # Update the scene (if it is ready)
+            if self.scene():
+                self.scene().update()
+
+        # Propagate along the event
+        return super().itemChange(change, p_object)
