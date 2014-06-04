@@ -24,6 +24,9 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
+sys.setrecursionlimit(500000)
+
+commit_count = 0
 
 class LocalRepository():
     """
@@ -101,7 +104,7 @@ class LocalRepository():
         logger.debug("Git object " + git_obj_sha[:8] + " contents:\n" + git_obj_contents)
         return git_obj_contents
 
-    def get_commit_object(self, commit_sha):
+    def get_commit_object(self, commit):
         """
         Deserialize the given commit object file contents
 
@@ -116,17 +119,16 @@ class LocalRepository():
             Commit message begins after a blank line.
 
 
-        :param commit_sha: The SHA-1 hash of the commit object to
-            retrieve
+        :param commit: The commit object to retrieve
         :return The CommitObject with the given SHA-1
         """
 
         # Get the decompressed contents of the commit object file
         git_terminal = GitTerminal(self.path)
-        commit_obj_file_contents = git_terminal.show_git_objects_contents(commit_sha)
+        commit_obj_file_contents = git_terminal.show_git_objects_contents(commit.sha)
 
         # Deserialize the contents of the commit file
-        commit = Commit(commit_sha)
+        # commit = Commit(commit)
         commit_message = ""
         reading_commit_message = False
         for line in commit_obj_file_contents.splitlines(True):
@@ -169,34 +171,38 @@ class LocalRepository():
 
         return commit
 
-    def get_commit_history(self, commit_sha, child_commit=None):
+    def get_commit_history(self, commit, child_commit=None):
         """
         Assemble the commit history for the commit with the given SHA-1
 
+        :param commit: TODO
         :param child_commit: The child we got to this commit from, if
             any. This is used to allow linking in both directions (from
             parent to child).
         """
+        global commit_count
 
         # Get the commit object with the given SHA-1
-        current_commit = self.get_commit_object(commit_sha)
-        self.commits[current_commit.sha.name] = current_commit
-        logger.debug("Getting history for commit " + current_commit.sha[:8])
+        commit = self.get_commit_object(commit)
+        self.commits[commit.sha.name] = commit
+        commit_count += 1
+        logger.debug("Getting history for commit " + commit.sha[:8])
+        logger.debug("Commit count: " + str(commit_count))
 
         # Add the given child, if any, to the current commit
         if child_commit is not None:
-            current_commit.add_child(child_commit)
+            commit.add_child(child_commit)
             logger.debug("Added child commit " + child_commit.sha[:8] + " to commit " +
-                         current_commit.sha[:8])
+                         commit.sha[:8])
 
         # Get the commit history for each parent
-        if current_commit.parents:
-            for parent in current_commit.parents:
+        if commit.parents:
+            for parent in commit.parents:
                 if str(parent.sha) not in self.commits:
-                    self.get_commit_history(parent.sha, current_commit)
+                    self.get_commit_history(parent, commit)
         else:
             # Current commit is the root
-            self.rootcommit = current_commit
+            self.rootcommit = commit
             logger.debug("Found root commit " + self.rootcommit.sha[:8])
 
     def get_commit_graph(self):
@@ -217,6 +223,15 @@ class LocalRepository():
             if branch.commit_sha.name not in self.commits:
                 logger.debug("Getting commit history for branch " + branch.name + " at commit " +
                              branch.commit_sha[:8])
-                self.get_commit_history(branch.commit_sha)
+                self.get_commit_history(Commit(branch.commit_sha))
+
+        # Get the Commit for each Branch and place it on a stack
+
+            # While the stack is not empty
+                # Get a Commit off the stack
+                # For each parent,
+                    #
+                    # link the popped Commit as the child and place the parent on stack
+
 
         return self.rootcommit
