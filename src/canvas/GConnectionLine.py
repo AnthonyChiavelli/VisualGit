@@ -79,39 +79,112 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         """
 
         # Calculate the starting and ending points
-        self._origin_point = self._calculate_attachment_point(self._origin, self._origin_attach_mode)
+        self._origin_point = self._calculate_attachment_point(self._origin,
+                                                              self._origin_attach_mode,
+                                                              self._destination)
         destination_point = self._calculate_attachment_point(self._destination,
-                                                             self._destination_attach_mode)
+                                                             self._destination_attach_mode,
+                                                             self._origin)
 
         # Render a line from the origin to the destination
         self._line = QLineF(self._origin_point, destination_point)
         QPainter.drawLine(self._line)
 
-    def _calculate_attachment_point(self, node, attach_mode):
+    def _calculate_attachment_point(self, node, attach_mode, other_node=None):
         """
         Calculate the point on the given node to attach to
 
         Point will be chosen based on the attach_mode supplied
+        :param node: the node for which to calculate the point
+        :param attach_mode: the mode of attachment
+        :param other_node: the node to which this will be attached,
+            needed for some attachment modes
         """
 
-        node_x_left = node.sceneBoundingRect().left()
+        # Important points needed for calculations
+        node_left = node.sceneBoundingRect().left()
+        node_right = node.sceneBoundingRect().right()
+        node_top = node.sceneBoundingRect().top()
+        node_bottom = node.sceneBoundingRect().bottom()
+        node_y_mid = node_top + (node.boundingRect().height() / 2)
+        node_x_mid = node_left + (node.boundingRect().width() / 2)
+        other_node_top = other_node.sceneBoundingRect().top()
+        other_node_bottom = other_node.sceneBoundingRect().bottom()
+        other_node_left = other_node.sceneBoundingRect().left()
+        other_node_right = other_node.sceneBoundingRect().right()
+        other_node_center = other_node.sceneBoundingRect().center()
 
+        # Attachment point will follow center of other node
+        if attach_mode == ATTACH_MODE_SMOOTH:
+
+            # If other node is below us
+            if other_node_top >= node_bottom:
+                # Our line should attach to our bottom...
+                y_attach = node_bottom
+                # ... in an x position that lines up with the center
+                # of the other node
+                x_attach = max(min(other_node_center.x(), node_right), node_left)
+                return QPointF(x_attach, y_attach)
+
+            # If the other node is to the right
+            if other_node_left >= node_right:
+                # Our line should attach to our right side...
+                x_attach = node_right
+                # ... in a y position that lines up with the center of
+                # the other ndoe
+                y_attach = max(min(other_node_center.y(), node_bottom), node_top)
+                return QPointF(x_attach, y_attach)
+
+            # If other node is above us
+            if other_node_bottom <= node_top:
+                # Our line should attach to our top...
+                y_attach = node_top
+                # ... in an x position that lines up with the center
+                # of the other node
+                x_attach = max(min(other_node_center.x(), node_right), node_left)
+                return QPointF(x_attach, y_attach)
+
+            # If the other node is to the left
+            if other_node_right <= node_left:
+                # Our line should attach to our left side...
+                x_attach = node_left
+                # ... in a y position that lines up with the center of
+                # the other node
+                y_attach = max(min(other_node_center.y(), node_bottom), node_top)
+                return QPointF(x_attach, y_attach)
+
+        # Attachment point will follow center of other node, but
+        # snap to face centers
+        if attach_mode == ATTACH_MODE_AUTO_CENTER:
+             # If other node is below us
+            if other_node_top >= node_bottom:
+                # Our line should attach to our bottom center
+                return QPointF(node_x_mid, node_bottom)
+
+            # If the other node is to the right
+            if other_node_left >= node_right:
+                # Our line should attach to our right center
+                return QPointF(node_right, node_y_mid)
+
+            # If other node is above us
+            if other_node_bottom <= node_top:
+                # Our line should attach to our top center
+                return QPointF(node_x_mid, node_top)
+
+            # If the other node is to the left
+            if other_node_right <= node_left:
+                # Our line should attach to our left center
+                return QPointF(node_left, node_y_mid)
+
+        # Static attachment modes
         if attach_mode == ATTACH_MODE_BOTTOM:
-            node_x_mid = node_x_left + (node.boundingRect().width() / 2)
-            node_y_bottom = node.sceneBoundingRect().bottom()
-            return QPointF(node_x_mid, node_y_bottom)
-
-        node_y_top = node.sceneBoundingRect().top()
+            return QPointF(node_x_mid, node_bottom)
 
         if attach_mode == ATTACH_MODE_TOP:
-            node_x_mid = node_x_left + (node.boundingRect().width() / 2)
-            return QPointF(node_x_mid, node_y_top)
+            return QPointF(node_x_mid, node_top)
 
         if attach_mode == ATTACH_MODE_LEFT:
-            node_y_mid = node_y_top + (node.boundingRect().height() / 2)
-            return QPointF(node_x_left, node_y_mid)
+            return QPointF(node_left, node_y_mid)
 
         if attach_mode == ATTACH_MODE_RIGHT:
-            node_y_mid = node_y_top + (node.boundingRect().height() / 2)
-            node_x_right = node.sceneBoundingRect().right()
-            return QPointF(node_x_right, node_y_mid)
+            return QPointF(node_right, node_y_mid)

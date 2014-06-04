@@ -98,10 +98,10 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # For each child node
         for child in g_commit_node.children:
             # Render an arrow from child to parent
-            commit_arrow = GCommitArrow(child,
-                                        canvas.GConnectionLine.ATTACH_MODE_TOP,
-                                        g_commit_node,
-                                        canvas.GConnectionLine.ATTACH_MODE_BOTTOM)
+            commit_arrow = GCommitArrow(g_commit_node,
+                                        canvas.GConnectionLine.ATTACH_MODE_SMOOTH,
+                                        child,
+                                        canvas.GConnectionLine.ATTACH_MODE_AUTO_CENTER)
             self.addItem(commit_arrow)
 
             # Add this arrow to the touching arrow lists of both commits
