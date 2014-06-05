@@ -3,7 +3,6 @@ from canvas import rendering_algorithms
 from PyQt4 import QtGui
 from canvas.GCommitArrow import GCommitArrow
 from canvas.GCommitNode import GCommitNode
-from git.Commit import Commit
 
 # Graphics properties
 CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
@@ -11,7 +10,7 @@ CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
 
 class GGraphicsScene(QtGui.QGraphicsScene):
     """
-    A QGraphicsScene to display the graphics representation of a repo
+    A QGraphicsScene to display the graphical representation of a repo
 
     The rendering of canvas graphics occurs in this GGraphicsScene. The
     GGraphicsView (a widget in our layout), will be set to view this
@@ -26,7 +25,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         """
         Constructor
 
-        Sets basic display options for this canvas
+        Sets up the display settings for this canvas
         """
         super().__init__()
 
@@ -36,39 +35,15 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # node twice (as it may be a child of multiple parents)
         self._sha_to_node = {}
 
-        a = Commit("a")
-        b = Commit("b")
-        c = Commit("c")
-        a.children.append(b)
-        a.children.append(c)
-        b.parents.append(a)
-        c.parents.append(a)
-
-        d = Commit("d")
-        e = Commit("e")
-        c.children.append(d)
-        c.children.append(e)
-        d.parents.append(c)
-        e.parents.append(c)
-
-        f = Commit("f")
-        g = Commit("g")
-        e.children.append(f)
-        e.children.append(g)
-        f.parents.append(e)
-        g.parents.append(e)
-
-        self.render_scene(a)
-
     def render_scene(self, commit):
         """
         Renders the various elements of the canvas
 
         First, the commits are parsed recursively and rendered onto
-        the canvas as GCommitNodes in a tree arrangement. Arrows
+        the canvas as GCommitNodes in a graph arrangement. Arrows
         are drawn to show parent-child relationships.
 
-        Then, branch and tag labels are drawn next to their commitss
+        Then, branch and tag labels are drawn next to their commits
         """
 
         # Convert our Commit tree to a tree of GCommitNode objects
@@ -78,11 +53,11 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         rendering_algorithms.minimum_width(root_g_commit_node)
 
         # Render commits onto canvas
-        self._render_commits(root_g_commit_node)
+        self._render_commit_tree(root_g_commit_node)
 
-    def _render_commits(self, g_commit_node):
+    def _render_commit_tree(self, g_commit_node):
         """
-        Render a graph of commits onto the canvas
+        Render a tree/graph of commits onto the canvas
 
         GCommitNodes are the graphical objects that represent and
         encapsulate commit nodes. Previously our tree of Commit objects
@@ -90,6 +65,9 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         assigned coordinates based on the particular tree drawing
         algorithm chosen. This method simple renders each node at its
         given x and y coordinates in a preorder traversal.
+
+        While drawing nodes, we also draw arrows to indicate a parent
+        child relationship between nodes.
         """
 
         # Add this node to the scene
@@ -104,12 +82,8 @@ class GGraphicsScene(QtGui.QGraphicsScene):
                                         canvas.GConnectionLine.ATTACH_MODE_AUTO_CENTER)
             self.addItem(commit_arrow)
 
-            # Add this arrow to the touching arrow lists of both commits
-            g_commit_node.touching_arrows.append(commit_arrow)
-            child.touching_arrows.append(commit_arrow)
-
             # And recursively render child
-            self._render_commits(child)
+            self._render_commit_tree(child)
 
     def _node_tree_from_commit(self, commit, parent=None):
         """
@@ -126,6 +100,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
 
         # Make sure we haven't already processed this commit (via
         # another parent)
+        # Grab the existing one if present
         if commit.sha in self._sha_to_node:
             g_commit_node = self._sha_to_node[commit.sha]
         # Otherwise we need a new one
@@ -139,13 +114,10 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # If our commit has children, recursively call ourselves
         # on each child and add the gcommitnode returned to our
         # children set
-        if len(commit.children) != 0:
+        if commit.children:
             for commit_child in commit.children:
                 new_g_commit_node = self._node_tree_from_commit(commit_child, g_commit_node)
                 g_commit_node.children.append(new_g_commit_node)
-
-
-
 
         # Add this to our global mapping of shas to gcommitnodes
         self._sha_to_node[commit.sha] = g_commit_node

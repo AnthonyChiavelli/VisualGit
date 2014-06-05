@@ -21,7 +21,7 @@ class GCommitNode(QtGui.QGraphicsItem):
     GCommitNode is a rectangle displaying the sha hash of the commit it
     represents. Parent/child relationships between GCommitNodes are
     shown with a GCommitArrow originating from the child. GCommitNodes
-    may be dragged.
+    may be dragged around the canvas.
 
     Inside a GCommitNode, there are two strings, a string labeling this
     as a commit, and a sha string, showing the sha of the commit.
@@ -47,10 +47,6 @@ class GCommitNode(QtGui.QGraphicsItem):
         self.commit = commit
         self.children = []
         self.parents = []
-
-        # Keep track of arrows that should be redrawn when this node
-        # moves
-        self.touching_arrows = []
 
         # Ensure that object can be selected and dragged around
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
@@ -91,7 +87,6 @@ class GCommitNode(QtGui.QGraphicsItem):
         logging.getLogger('git_interaction_logger').info("Rendering node")
 
     def paint_rectangle(self, QPainter):
-
         """
         Renders the node rectangle
 
@@ -108,18 +103,16 @@ class GCommitNode(QtGui.QGraphicsItem):
         :param QPainter: interface to the canvas
         """
 
-        commit_sha = self.commit.sha
-
         # Set up font and text settings
         text_font = QFont()
         text_font.setPointSize(NODE_TEXT_FONT_SIZE)
         QPainter.setFont(text_font)
         QPainter.setPen(NODE_TEXT_COLOR)
 
-        # Measure size of strings so they can be centered properly
+        # Measure size of strings so they can be positioned properly
         font_metrics = QFontMetrics(text_font)
         label_text_width = font_metrics.width(NODE_LABEL_TEXT)
-        sha_text_width = font_metrics.width(commit_sha)
+        sha_text_width = font_metrics.width(self.commit_sha)
 
         # Position and render text
         label_margin = (NODE_WIDTH - label_text_width) / 2
@@ -127,7 +120,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         QPainter.drawText(label_position, NODE_LABEL_TEXT)
         sha_margin = (NODE_WIDTH - sha_text_width) / 2
         sha_position = QPointF(sha_margin, 25)
-        QPainter.drawText(sha_position, commit_sha)
+        QPainter.drawText(sha_position, self.commit_sha)
 
     def itemChange(self, change, p_object):
         """

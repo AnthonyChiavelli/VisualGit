@@ -65,12 +65,12 @@ class GBranchLabel(QtGui.QGraphicsItem):
             QPainter.setBrush(NODE_UNSELECTED_COLOR)
 
         # Render the rectangle
-        self.paint_rectange(QPainter)
+        self.paint_rectangle(QPainter)
 
         # Render the node text
         self.paint_text(QPainter)
 
-    def paint_rectange(self, QPainter):
+    def paint_rectangle(self, QPainter):
         """
         Render the node rectangle
 

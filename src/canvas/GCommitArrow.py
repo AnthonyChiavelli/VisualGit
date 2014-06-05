@@ -44,6 +44,11 @@ class GCommitArrow(GConnectionLine):
         self._render_head(QPainter)
 
     def _render_head(self, QPainter):
+        """
+        Render the triangular arrow head to indicate destination node
+
+        :param QPainter: interface to the canvas
+        """
         # Calculate the angle of our line
         angle_of_line = acos(self._line.dx() / self._line.length())
 
@@ -61,7 +66,7 @@ class GCommitArrow(GConnectionLine):
             sin(angle_of_line + pi - pi / 3) * ARROW_HEAD_WIDTH,
             cos(angle_of_line + pi - pi / 3) * ARROW_HEAD_LENGTH)
 
-        # Use the brush to fill in arrow head
+        # Use a solid brush to fill in arrow head
         QPainter.setBrush(ARROW_HEAD_BRUSH)
 
         # Use the three points to draw the polygon

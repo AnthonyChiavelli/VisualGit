@@ -33,8 +33,8 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         opposite node is facing.
 
     canvas.GConnectionLine.ATTACH_MODE_SMOOTH
-        The line will attach to the point nearest the center of the
-        opposite node
+        The line will attach to the point along the border nearest
+        the center of the opposite node
     """
 
     def __init__(self, origin, origin_attach_mode, destination, destination_attach_mode):
@@ -95,6 +95,7 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         Calculate the point on the given node to attach to
 
         Point will be chosen based on the attach_mode supplied
+
         :param node: the node for which to calculate the point
         :param attach_mode: the mode of attachment
         :param other_node: the node to which this will be attached,
@@ -114,7 +115,8 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         other_node_right = other_node.sceneBoundingRect().right()
         other_node_center = other_node.sceneBoundingRect().center()
 
-        # Attachment point will follow center of other node
+        # Smooth mode: Attachment point will maintain minimum distance
+        # to the center of the other node
         if attach_mode == ATTACH_MODE_SMOOTH:
 
             # If other node is below us
@@ -131,7 +133,7 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
                 # Our line should attach to our right side...
                 x_attach = node_right
                 # ... in a y position that lines up with the center of
-                # the other ndoe
+                # the other node
                 y_attach = max(min(other_node_center.y(), node_bottom), node_top)
                 return QPointF(x_attach, y_attach)
 
@@ -153,9 +155,10 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
                 y_attach = max(min(other_node_center.y(), node_bottom), node_top)
                 return QPointF(x_attach, y_attach)
 
-        # Attachment point will follow center of other node, but
-        # snap to face centers
+        # Attachment point will follow center of other node similar to
+        # smooth mode, but will snap to the center points of our faces
         if attach_mode == ATTACH_MODE_AUTO_CENTER:
+
              # If other node is below us
             if other_node_top >= node_bottom:
                 # Our line should attach to our bottom center
@@ -176,7 +179,9 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
                 # Our line should attach to our left center
                 return QPointF(node_left, node_y_mid)
 
-        # Static attachment modes
+        # Static attachment modes: attachment will occur at the
+        # center of the specified face and remain there regardless of
+        # movement
         if attach_mode == ATTACH_MODE_BOTTOM:
             return QPointF(node_x_mid, node_bottom)
 
