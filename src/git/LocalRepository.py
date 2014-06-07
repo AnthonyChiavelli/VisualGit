@@ -1,6 +1,5 @@
 import logging
 import os
-import string
 import zlib
 import sys
 
@@ -11,6 +10,7 @@ from git.GitTerminal import GitTerminal
 from git.GitUser import GitUser
 from git.Sha1 import Sha1
 from datetime import datetime
+from profilehooks import profile
 
 PATH_TO_BRANCHES = "/.git/refs/heads/"
 PATH_TO_GIT_OBJECTS = "/.git/objects/"
@@ -23,6 +23,8 @@ ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
+
+commit_count = 0
 
 
 class LocalRepository():
@@ -59,6 +61,59 @@ class LocalRepository():
         self.tags = []
         self.commits = {}
 
+    @profile()
+    def get_commit_graph(self):
+        """
+        Assemble and return the complete commit history for this local
+        repository
+
+        :return The CommitObject at the root of the commit graph
+        """
+
+        global commit_count
+
+        # Get a list of all the local branches
+        self.branches = self.get_all_local_branches()
+
+        # Get the Commit for each Branch and place it on a stack
+        stack = []
+        for branch in self.branches:
+            if branch.commit_sha.name not in self.commits:
+                stack.append(Commit(branch.commit_sha))
+                # While the stack is not empty
+                while stack:
+                # Get a Commit off the stack
+                    commit_count += 1
+                    current_commit = stack.pop()
+                    self.commits[current_commit.sha.name] = current_commit
+                    current_commit = self.get_commit_object(current_commit)
+                    logger.debug("Getting history for commit " + current_commit.sha[:8])
+                    logger.debug("Commit count: " + str(commit_count))
+                    # For each parent
+                    if current_commit.parents:
+                        for parent in current_commit.parents:
+                            # If we haven't encountered the parent commit before
+                            if parent.sha.name not in self.commits:
+                                # link the popped Commit as the child and place the parent on stack
+                                parent.add_child(current_commit)
+                                stack.append(parent)
+                    else:
+                        self.rootcommit = current_commit
+                        logger.debug("Found root commit " + self.rootcommit.sha[:8])
+
+        return self.rootcommit
+
+    def get_all_local_branches(self):
+        """
+        Return a list of all local branches
+        """
+        branchlist = []
+        for branch_filename in os.listdir(self.path + PATH_TO_BRANCHES):
+            branch = self.get_local_branch(branch_filename)
+            branchlist.append(branch)
+
+        return branchlist
+
     def get_local_branch(self, branch_name):
         """
         Return the local Branch with the given name
@@ -74,34 +129,7 @@ class LocalRepository():
 
         return branch
 
-    def get_all_local_branches(self):
-        """
-        Return a list of all local branches
-        """
-        branchlist = []
-        for branch_filename in os.listdir(self.path + PATH_TO_BRANCHES):
-            branch = self.get_local_branch(branch_filename)
-            branchlist.append(branch)
-        return branchlist
-
-    def get_git_object_contents(self, git_obj_sha):
-        """
-         Return the decompressed contents of the git object with the
-         given SHA-1
-
-        :param git_obj_sha: The SHA-1 hash of the git object to be
-            fetched
-        """
-
-        git_obj = GitObject(git_obj_sha)
-        git_obj_contents = open(self.path + PATH_TO_GIT_OBJECTS +
-                                git_obj.get_subdirectory_name() + "/" +
-                                git_obj.get_file_name(), "rb").read()
-        git_obj_contents = zlib.decompress(git_obj_contents).decode()
-        logger.debug("Git object " + git_obj_sha[:8] + " contents:\n" + git_obj_contents)
-        return git_obj_contents
-
-    def get_commit_object(self, commit_sha):
+    def get_commit_object(self, commit):
         """
         Deserialize the given commit object file contents
 
@@ -116,17 +144,16 @@ class LocalRepository():
             Commit message begins after a blank line.
 
 
-        :param commit_sha: The SHA-1 hash of the commit object to
-            retrieve
+        :param commit: The commit object to retrieve
         :return The CommitObject with the given SHA-1
         """
 
         # Get the decompressed contents of the commit object file
         git_terminal = GitTerminal(self.path)
-        commit_obj_file_contents = git_terminal.show_git_objects_contents(commit_sha)
+        commit_obj_file_contents = git_terminal.show_git_objects_contents(commit.sha)
 
         # Deserialize the contents of the commit file
-        commit = Commit(commit_sha)
+        # commit = Commit(commit)
         commit_message = ""
         reading_commit_message = False
         for line in commit_obj_file_contents.splitlines(True):
@@ -169,54 +196,20 @@ class LocalRepository():
 
         return commit
 
-    def get_commit_history(self, commit_sha, child_commit=None):
+    def get_git_object_contents(self, git_obj_sha):
         """
-        Assemble the commit history for the commit with the given SHA-1
+         Return the decompressed contents of the git object with the
+         given SHA-1
 
-        :param child_commit: The child we got to this commit from, if
-            any. This is used to allow linking in both directions (from
-            parent to child).
-        """
-
-        # Get the commit object with the given SHA-1
-        current_commit = self.get_commit_object(commit_sha)
-        self.commits[current_commit.sha.name] = current_commit
-        logger.debug("Getting history for commit " + current_commit.sha[:8])
-
-        # Add the given child, if any, to the current commit
-        if child_commit is not None:
-            current_commit.add_child(child_commit)
-            logger.debug("Added child commit " + child_commit.sha[:8] + " to commit " +
-                         current_commit.sha[:8])
-
-        # Get the commit history for each parent
-        if current_commit.parents:
-            for parent in current_commit.parents:
-                if str(parent.sha) not in self.commits:
-                    self.get_commit_history(parent.sha, current_commit)
-        else:
-            # Current commit is the root
-            self.rootcommit = current_commit
-            logger.debug("Found root commit " + self.rootcommit.sha[:8])
-
-    def get_commit_graph(self):
-        """
-        Assemble and return the complete commit history for this local
-        repository
-
-        :return The CommitObject at the root of the commit graph
+        :param git_obj_sha: The SHA-1 hash of the git object to be
+            fetched
         """
 
-        # Get a list of all the local branches
-        self.branches = self.get_all_local_branches()
+        git_obj = GitObject(git_obj_sha)
+        git_obj_contents = open(self.path + PATH_TO_GIT_OBJECTS +
+                                git_obj.get_subdirectory_name() + "/" +
+                                git_obj.get_file_name(), "rb").read()
+        git_obj_contents = zlib.decompress(git_obj_contents).decode()
+        logger.debug("Git object " + git_obj_sha[:8] + " contents:\n" + git_obj_contents)
 
-        # Assemble the commit history of each branch into a single (root) commit
-        self.rootcommit = None
-        self.commits = {}
-        for branch in self.branches:
-            if branch.commit_sha.name not in self.commits:
-                logger.debug("Getting commit history for branch " + branch.name + " at commit " +
-                             branch.commit_sha[:8])
-                self.get_commit_history(branch.commit_sha)
-
-        return self.rootcommit
+        return git_obj_contents
