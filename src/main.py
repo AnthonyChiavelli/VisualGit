@@ -2,10 +2,11 @@ import logging
 import os
 import sys
 from PyQt4 import QtGui, QtCore, uic
+from canvas.GGraphicsScene import GGraphicsScene
 from git.LocalRepository import LocalRepository
 
-MAIN_UI_FILE = '/home/kahmali/Development/Projects/VisualGit/ui/mainwindow.ui'
-TEST_REPOSITORY = '/home/kahmali/Development/Projects/TestGit'
+MAIN_UI_FILE = os.path.join(os.path.dirname(__file__), os.pardir, "ui", "mainwindow.ui")
+TEST_REPOSITORY = os.path.join(os.path.dirname(__file__), os.pardir, "test_repo")
 
 
 class TestApp(QtGui.QMainWindow):
