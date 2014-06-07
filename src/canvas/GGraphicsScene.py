@@ -1,3 +1,4 @@
+from PyQt4.QtGui import QBrush
 import canvas.GConnectionLine
 from canvas import rendering_algorithms
 from PyQt4 import QtGui

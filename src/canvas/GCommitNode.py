@@ -11,6 +11,7 @@ NODE_SELECTED_COLOR = QColor(229, 150, 47)
 NODE_UNSELECTED_COLOR = QColor(99, 102, 133)
 NODE_TEXT_COLOR = QColor(255, 255, 255)
 NODE_TEXT_FONT_SIZE = 9
+NODE_SHA_LENGTH = 6
 NODE_LABEL_TEXT = 'commit'
 
 
@@ -83,9 +84,6 @@ class GCommitNode(QtGui.QGraphicsItem):
         # Render the node text
         self.paint_text(QPainter)
 
-        logging.getLogger('app_logger').info("Rendering node")
-        logging.getLogger('git_interaction_logger').info("Rendering node")
-
     def paint_rectangle(self, QPainter):
         """
         Renders the node rectangle
@@ -112,7 +110,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         # Measure size of strings so they can be positioned properly
         font_metrics = QFontMetrics(text_font)
         label_text_width = font_metrics.width(NODE_LABEL_TEXT)
-        sha_text_width = font_metrics.width(self.commit_sha)
+        sha_text_width = font_metrics.width(self.commit.sha.get_string_of_length(NODE_SHA_LENGTH))
 
         # Position and render text
         label_margin = (NODE_WIDTH - label_text_width) / 2
@@ -120,7 +118,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         QPainter.drawText(label_position, NODE_LABEL_TEXT)
         sha_margin = (NODE_WIDTH - sha_text_width) / 2
         sha_position = QPointF(sha_margin, 25)
-        QPainter.drawText(sha_position, self.commit_sha)
+        QPainter.drawText(sha_position, self.commit.sha.get_string_of_length(NODE_SHA_LENGTH))
 
     def itemChange(self, change, p_object):
         """

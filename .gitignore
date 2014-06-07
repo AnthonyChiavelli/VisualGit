@@ -87,3 +87,6 @@ docs/_build/
 
 # Log files
 logs
+
+# Test repo
+rest_repo/
