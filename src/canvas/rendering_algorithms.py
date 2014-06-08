@@ -62,6 +62,8 @@ def _minimum_width(g_commit_node, next_x_slots=[0], depth=0):
     # Column at this depth was used, move on to next one
     next_x_slots[depth] += 1
 
+    num_of_children = len(g_commit_node.children)
+
     # Draw children at next lower level
     for child in g_commit_node.children:
         next_x_slots.append(0)

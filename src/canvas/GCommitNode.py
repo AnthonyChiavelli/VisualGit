@@ -48,6 +48,7 @@ class GCommitNode(QtGui.QGraphicsItem):
         self.commit = commit
         self.children = []
         self.parents = []
+        self._branch_labels = []
 
         # Ensure that object can be selected and dragged around
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
@@ -130,9 +131,25 @@ class GCommitNode(QtGui.QGraphicsItem):
 
         # If we've been moved
         if change == QtGui.QGraphicsItem.ItemPositionChange:
+
+            # Move our branch labels along with us
+            for branch in self._branch_labels:
+                # Calculate our delta and apply it to this branch label
+                delta_x = p_object.x() - self.pos().x()
+                delta_y = p_object.y() - self.pos().y()
+                branch.setPos(branch.pos().x() + delta_x, branch.pos().y() + delta_y)
+
             # Update the scene (if it is ready)
             if self.scene():
                 self.scene().update()
 
         # Propagate along the event
         return super().itemChange(change, p_object)
+
+    def add_branch_label(self, branch_label):
+        """
+        Associate a branch label with this commit
+
+        :param branch_label: The branch label to associate
+        """
+        self._branch_labels.append(branch_label)

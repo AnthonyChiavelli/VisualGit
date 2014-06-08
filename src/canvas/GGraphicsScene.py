@@ -1,4 +1,5 @@
 from PyQt4.QtGui import QBrush
+from canvas.GBranchLabel import GBranchLabel
 import canvas.GConnectionLine
 from canvas import rendering_algorithms
 from PyQt4 import QtGui
@@ -36,7 +37,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # node twice (as it may be a child of multiple parents)
         self._sha_to_node = {}
 
-    def render_scene(self, commit):
+    def render_scene(self, commit, branches):
         """
         Renders the various elements of the canvas
 
@@ -45,6 +46,9 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         are drawn to show parent-child relationships.
 
         Then, branch and tag labels are drawn next to their commits
+
+        :param commit: The root of the commit tree to render
+        :param branches: The branches of the commit tree to render
         """
 
         # Convert our Commit tree to a tree of GCommitNode objects
@@ -55,6 +59,9 @@ class GGraphicsScene(QtGui.QGraphicsScene):
 
         # Render commits onto canvas
         self._render_commit_tree(root_g_commit_node)
+
+        # Render branches onto the canvas
+        self._render_branch_labels(branches)
 
     def _render_commit_tree(self, g_commit_node):
         """
@@ -99,6 +106,8 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         parent-child relationships.
         """
 
+        num_of_children = len(commit.children)
+
         # Make sure we haven't already processed this commit (via
         # another parent)
         # Grab the existing one if present
@@ -115,13 +124,41 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # If our commit has children, recursively call ourselves
         # on each child and add the gcommitnode returned to our
         # children set
-        if commit.children:
-            for commit_child in commit.children:
-                new_g_commit_node = self._node_tree_from_commit(commit_child, g_commit_node)
-                g_commit_node.children.append(new_g_commit_node)
+        for commit_child in commit.children:
+            new_g_commit_node = self._node_tree_from_commit(commit_child, g_commit_node)
+            g_commit_node.children.append(new_g_commit_node)
 
         # Add this to our global mapping of shas to gcommitnodes
         self._sha_to_node[commit.sha] = g_commit_node
 
         # Return newly converted gcommitnode
         return g_commit_node
+
+    def _render_branch_labels(self, branches):
+        """
+        Render branch labels next to, and connected to, the commits
+        to which they point.
+
+        :param branches: The branches whose labels are to be rendered
+        """
+
+        # For each branch
+        for branch in branches:
+            # Create a representing branch label
+            new_branch_label = GBranchLabel(branch)
+
+            # Attach it to its commit via arrow
+            corresponding_commit = self._sha_to_node[branch.commit_sha]
+            new_branch_label.setPos(corresponding_commit.pos().x() + 150,
+                                    corresponding_commit.pos().y())
+            new_connection_line = canvas.GConnectionLine.GConnectionLine(corresponding_commit,
+                                                     canvas.GConnectionLine.ATTACH_MODE_SMOOTH,
+                                                     new_branch_label,
+                                                     canvas.GConnectionLine.ATTACH_MODE_LEFT)
+
+            # Associate it with its commit corresponding_commit
+            corresponding_commit.add_branch_label(new_branch_label)
+
+            # Render connection line and label
+            self.addItem(new_branch_label)
+            self.addItem(new_connection_line)

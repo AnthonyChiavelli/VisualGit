@@ -3,7 +3,6 @@ from PyQt4 import QtGui
 # Graphics Properties
 from PyQt4.QtCore import QRectF, QPointF
 from PyQt4.QtGui import QColor, QFont, QFontMetrics
-from model.Branch import Branch
 
 NODE_WIDTH = 60
 NODE_HEIGHT = 40
@@ -23,7 +22,7 @@ class GBranchLabel(QtGui.QGraphicsItem):
     relative position when a GCommitNode is moved.
     """
 
-    def __init__(self, branch=None):
+    def __init__(self, branch):
         """
         Constructor
 
@@ -31,12 +30,12 @@ class GBranchLabel(QtGui.QGraphicsItem):
         """
 
         super().__init__()
-        self._branch = branch
+        self.branch = branch
 
-    @property
-    def branch(self):
-        """ The branch that this represents """
-        return self._branch
+        # Ensure that object can be selected and dragged around
+        self.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
+        self.setFlag(QtGui.QGraphicsItem.ItemIsSelectable, True)
+        self.setFlag(QtGui.QGraphicsItem.ItemSendsGeometryChanges, True)
 
     def boundingRect(self):
         """
@@ -92,16 +91,30 @@ class GBranchLabel(QtGui.QGraphicsItem):
         QPainter.setFont(text_font)
         QPainter.setPen(NODE_TEXT_COLOR)
 
-        # TODO remove
-        _branch = Branch("master", "1423")
-
         # Measure size of strings so they can be centered properly
         font_metrics = QFontMetrics(text_font)
-        label_text_width = font_metrics.width(_branch.name)
+        label_text_width = font_metrics.width(self.branch.name)
         label_text_height = font_metrics.height()
 
         # Position and render text
         label_margin_left = (NODE_WIDTH - label_text_width) / 2
         label_margin_top = (NODE_HEIGHT - label_text_height) / 2
-        label_position = QPointF(label_margin_left, label_margin_top)
-        QPainter.drawText(label_position, _branch.name)
+        label_position = QPointF(label_margin_left, label_margin_top / 2 + label_text_height)
+        QPainter.drawText(label_position, self.branch.name)
+
+    def itemChange(self, change, p_object):
+        """
+        Called when there is a change of some sort to this item
+
+        GraphicsItemChange contains a value indicating the nature of
+        the change
+        """
+
+        # If we've been moved
+        if change == QtGui.QGraphicsItem.ItemPositionChange:
+            # Update the scene (if it is ready)
+            if self.scene():
+                self.scene().update()
+
+        # Propagate along the event
+        return super().itemChange(change, p_object)

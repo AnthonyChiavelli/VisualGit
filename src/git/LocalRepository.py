@@ -10,7 +10,6 @@ from git.GitTerminal import GitTerminal
 from git.GitUser import GitUser
 from git.Sha1 import Sha1
 from datetime import datetime
-from profilehooks import profile
 
 PATH_TO_BRANCHES = "/.git/refs/heads/"
 PATH_TO_GIT_OBJECTS = "/.git/objects/"
@@ -61,7 +60,6 @@ class LocalRepository():
         self.tags = []
         self.commits = {}
 
-    @profile()
     def get_commit_graph(self):
         """
         Assemble and return the complete commit history for this local

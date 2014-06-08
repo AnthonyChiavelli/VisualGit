@@ -24,12 +24,13 @@ class TestApp(QtGui.QMainWindow):
         # Test getting the commit history for a local repository
         test_repo = LocalRepository(TEST_REPOSITORY)
         root_commit = test_repo.get_commit_graph()
+        branches = test_repo.get_all_local_branches()
 
         # Create a QGraphicsScene, attach it to our graphics view,
         # and send it the root commit to render
         q_graphics_scene = GGraphicsScene()
         self.ui.graphicsView.setScene(q_graphics_scene)
-        q_graphics_scene.render_scene(root_commit)
+        q_graphics_scene.render_scene(root_commit, branches)
 
 
 def init_loggers():
