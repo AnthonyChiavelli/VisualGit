@@ -1,5 +1,7 @@
 class Sha1():
     """
+    .. _Sha1:
+
     Represents a SHA-1 hash used as an identifier for git
     objects
 
@@ -36,6 +38,42 @@ class Sha1():
         Return the string representation of this SHA-1 hash
         """
         return self.name
+
+    def __gt__(self, other):
+        """
+        Return true if the hexadecimal value of this SHA-1 is greater
+        than the other
+
+        :param other: The SHA-1 hash to compare this to
+        """
+        return int(self.name, 16) > int(other.name, 16)
+
+    def __lt__(self, other):
+        """
+        Return true if the hexadecimal value of this SHA-1 is less than
+        the other
+
+        :param other: The SHA-1 hash to compare this to
+        """
+        return int(self.name, 16) < int(other.name, 16)
+
+    def __ge__(self, other):
+        """
+        Return true if the hexadecimal value of this SHA-1 is greater
+        than or equal to the other
+
+        :param other: The SHA-1 hash to compare this to
+        """
+        return int(self.name, 16) >= int(other.name, 16)
+
+    def __le__(self, other):
+        """
+        Return true if the hexadecimal value of this SHA-1 is less than
+        or equal to the other
+
+        :param other: The SHA-1 hash to compare this to
+        """
+        return int(self.name, 16) <= int(other.name, 16)
 
     def __eq__(self, other):
         """
