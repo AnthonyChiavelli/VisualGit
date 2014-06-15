@@ -39,6 +39,8 @@ Contributions
 =============
 We welcome contributions with open arms! For detailed information on how you can contribute to this project, please read our [Python Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html). It has all you need to know about how to prepare your code for submission. Even if we know and like you, if your code isn't up to spec, it's not touching this repository!
 
+We strongly recommend that all contributors (and anyone else that would like to dig a little deeper into git) read [Git Internals](https://github.com/pluralsight/git-internals-pdf/releases) by Scott Chacon. It's a great read, and we'd like to say a big thank you Mr. Chacon for all his amazing git documentation! 
+
 Communication
 =============
 As noted in our [Coding Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html), [GitHub Issues](https://github.com/AnthonyReid99/VisualGit/issues) will be the primary means of communication for this project. Whether it be a question, comment, bug report. feature request, or anything else involving the project, it would be best to keep our discussion there. We love feedback, so head on over there whenever the mood strikes you and let us know how you feel!
