@@ -18,19 +18,16 @@ class TestApp(QtGui.QMainWindow):
         self.ui = uic.loadUi(MAIN_UI_FILE)
         self.ui.show()
 
-        # Connect testButton's clicked() signal to our testFunc() function
-        self.connect(self.ui.testButton, QtCore.SIGNAL('clicked()'), test_func)
-
         # Test getting the commit history for a local repository
         test_repo = LocalRepository(TEST_REPOSITORY)
         root_commit = test_repo.get_commit_graph()
-        branches = test_repo.get_all_local_branches()
+        branches = test_repo.branches
 
         # Create a QGraphicsScene, attach it to our graphics view,
         # and send it the root commit to render
         q_graphics_scene = GGraphicsScene()
         self.ui.graphicsView.setScene(q_graphics_scene)
-        q_graphics_scene.render_scene(root_commit, branches)
+        # q_graphics_scene.render_scene(root_commit, branches)
 
 
 def init_loggers():
@@ -82,10 +79,6 @@ def init_loggers():
     # Connect channel, logger, and formatter
     git_interaction_logger_handler.setFormatter(git_interaction_logger_format)
     git_interaction_logger.addHandler(git_interaction_logger_handler)
-
-
-def test_func():
-    win.ui.commitMessageTextEdit.setText('Message!')
 
 if __name__ == "__main__":
     # Initialize our logger
