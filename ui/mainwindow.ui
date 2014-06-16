@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1262</width>
+    <width>1216</width>
     <height>949</height>
    </rect>
   </property>
@@ -59,7 +59,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1262</width>
+     <width>1216</width>
      <height>27</height>
     </rect>
    </property>
@@ -230,6 +230,9 @@
                  </item>
                  <item row="2" column="1">
                   <widget class="QLineEdit" name="txt_commit_sha">
+                   <property name="maxLength">
+                    <number>40</number>
+                   </property>
                    <property name="readOnly">
                     <bool>true</bool>
                    </property>
@@ -252,12 +255,18 @@
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
                    </property>
+                   <property name="childrenCollapsible">
+                    <bool>false</bool>
+                   </property>
                    <widget class="QWidget" name="">
                     <layout class="QVBoxLayout" name="verticalLayout_2">
                      <item>
                       <widget class="QLineEdit" name="txt_author_name">
                        <property name="readOnly">
                         <bool>true</bool>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Author Name</string>
                        </property>
                       </widget>
                      </item>
@@ -266,6 +275,9 @@
                        <property name="readOnly">
                         <bool>true</bool>
                        </property>
+                       <property name="placeholderText">
+                        <string>Author Email</string>
+                       </property>
                       </widget>
                      </item>
                     </layout>
@@ -273,19 +285,43 @@
                    <widget class="QWidget" name="">
                     <layout class="QVBoxLayout" name="verticalLayout">
                      <property name="sizeConstraint">
-                      <enum>QLayout::SetDefaultConstraint</enum>
+                      <enum>QLayout::SetMinimumSize</enum>
                      </property>
                      <item>
                       <widget class="QLineEdit" name="txt_author_date">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="baseSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
                        <property name="readOnly">
                         <bool>true</bool>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Authored Date</string>
                        </property>
                       </widget>
                      </item>
                      <item>
                       <widget class="QLineEdit" name="txt_author_time">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
                        <property name="readOnly">
                         <bool>true</bool>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Authored Time</string>
                        </property>
                       </widget>
                      </item>
@@ -305,6 +341,9 @@
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
                    </property>
+                   <property name="childrenCollapsible">
+                    <bool>false</bool>
+                   </property>
                    <widget class="QWidget" name="layoutWidget_4">
                     <layout class="QVBoxLayout" name="verticalLayout_6">
                      <item>
@@ -312,12 +351,18 @@
                        <property name="readOnly">
                         <bool>true</bool>
                        </property>
+                       <property name="placeholderText">
+                        <string>Committer Name</string>
+                       </property>
                       </widget>
                      </item>
                      <item>
                       <widget class="QLineEdit" name="txt_author_email_3">
                        <property name="readOnly">
                         <bool>true</bool>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Committer Email</string>
                        </property>
                       </widget>
                      </item>
@@ -333,12 +378,18 @@
                        <property name="readOnly">
                         <bool>true</bool>
                        </property>
+                       <property name="placeholderText">
+                        <string>Commit Date</string>
+                       </property>
                       </widget>
                      </item>
                      <item>
                       <widget class="QLineEdit" name="txt_author_time_3">
                        <property name="readOnly">
                         <bool>true</bool>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Commit Time</string>
                        </property>
                       </widget>
                      </item>
@@ -511,6 +562,530 @@
         <attribute name="title">
          <string>Commands</string>
         </attribute>
+        <layout class="QGridLayout" name="gridLayout_13">
+         <item row="0" column="0">
+          <widget class="QSplitter" name="splitter_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <widget class="QWidget" name="">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <layout class="QGridLayout" name="gridLayout_12">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetFixedSize</enum>
+               </property>
+               <item row="0" column="0">
+                <widget class="QScrollArea" name="scrollArea_3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>180</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>180</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="widgetResizable">
+                  <bool>true</bool>
+                 </property>
+                 <widget class="QWidget" name="scrollAreaWidgetContents_3">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>-60</y>
+                    <width>165</width>
+                    <height>638</height>
+                   </rect>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_11">
+                   <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_7">
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Init</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_2">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Clone</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_6">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Add</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_3">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Commit</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_4">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Branch</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_5">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Checkout</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_7">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Stash</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_9">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Merge</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_11">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Rebase</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_8">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Log</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_10">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Show</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_12">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Diff</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btn_command_init_13">
+                       <property name="font">
+                        <font>
+                         <pointsize>14</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">Text-align:left;
+padding: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Status</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="resources/images.qrc">
+                         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                       </property>
+                       <property name="flat">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_8">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_10">
+                 <item row="1" column="0">
+                  <widget class="QScrollArea" name="scrollArea_2">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                     <horstretch>1</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="widgetResizable">
+                    <bool>true</bool>
+                   </property>
+                   <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>309</width>
+                      <height>544</height>
+                     </rect>
+                    </property>
+                    <zorder>label_2</zorder>
+                   </widget>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_4">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Branch Options</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="">
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Output</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTextBrowser" name="textBrowser"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </item>
