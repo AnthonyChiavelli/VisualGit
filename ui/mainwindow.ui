@@ -67,7 +67,7 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen"/>
+    <addaction name="action_open"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -105,9 +105,15 @@
    <addaction name="menuVCS"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="dock_explorer">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="allowedAreas">
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string/>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -126,7 +132,7 @@
         <attribute name="title">
          <string>Commits</string>
         </attribute>
-        <layout class="QGridLayout" name="gridLayout_8">
+        <layout class="QGridLayout" name="gridLayout_9">
          <item row="0" column="0">
           <widget class="QSplitter" name="splitter_5">
            <property name="orientation">
@@ -167,354 +173,366 @@
               </layout>
              </widget>
             </widget>
-            <widget class="QScrollArea" name="scrollArea">
-             <property name="widgetResizable">
-              <bool>true</bool>
-             </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>407</width>
-                <height>551</height>
-               </rect>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_9">
-               <item row="0" column="0">
-                <layout class="QGridLayout" name="gridLayout_7">
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QLabel" name="lbl_commit_details_header">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <underline>true</underline>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Commit Details</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0" colspan="2">
-                  <widget class="QLabel" name="lbl_commit_msg_header">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Commit message header</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="lbl_commit_sha">
-                   <property name="text">
-                    <string>SHA-1 ID</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QLineEdit" name="txt_commit_sha">
-                   <property name="maxLength">
-                    <number>40</number>
-                   </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="lbl_commit_author">
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Author</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="0" colspan="2">
-                  <widget class="QSplitter" name="splitter">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="childrenCollapsible">
-                    <bool>false</bool>
-                   </property>
-                   <widget class="QWidget" name="">
-                    <layout class="QVBoxLayout" name="verticalLayout_2">
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_name">
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Author Name</string>
-                       </property>
+            <widget class="QWidget" name="">
+             <layout class="QVBoxLayout" name="layout_commit_details">
+              <item>
+               <widget class="QLabel" name="lbl_commit_details_header">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <underline>false</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Commit Details</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QScrollArea" name="scrollArea">
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>349</width>
+                   <height>532</height>
+                  </rect>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_8">
+                  <item row="0" column="0">
+                   <layout class="QGridLayout" name="gridLayout_7">
+                    <item row="0" column="0" colspan="2">
+                     <widget class="QLabel" name="lbl_commit_msg_header">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>14</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Commit message header</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="lbl_commit_sha">
+                      <property name="text">
+                       <string>SHA-1 ID</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QLineEdit" name="txt_commit_sha">
+                      <property name="maxLength">
+                       <number>40</number>
+                      </property>
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="lbl_commit_author">
+                      <property name="font">
+                       <font>
+                        <pointsize>11</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Author</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0" colspan="2">
+                     <widget class="QSplitter" name="splitter">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <widget class="QWidget" name="">
+                       <layout class="QVBoxLayout" name="verticalLayout_2">
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_name">
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Author Name</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_email">
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Author Email</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_email">
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Author Email</string>
-                       </property>
+                      <widget class="QWidget" name="">
+                       <layout class="QVBoxLayout" name="verticalLayout">
+                        <property name="sizeConstraint">
+                         <enum>QLayout::SetMaximumSize</enum>
+                        </property>
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_date">
+                          <property name="maximumSize">
+                           <size>
+                            <width>130</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="baseSize">
+                           <size>
+                            <width>0</width>
+                            <height>0</height>
+                           </size>
+                          </property>
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Authored Date</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_time">
+                          <property name="maximumSize">
+                           <size>
+                            <width>130</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Authored Time</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                   <widget class="QWidget" name="">
-                    <layout class="QVBoxLayout" name="verticalLayout">
-                     <property name="sizeConstraint">
-                      <enum>QLayout::SetMinimumSize</enum>
-                     </property>
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_date">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="baseSize">
-                        <size>
-                         <width>0</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Authored Date</string>
-                       </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="0">
+                     <widget class="QLabel" name="lbl_commit_committer">
+                      <property name="text">
+                       <string>Committer</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="5" column="0" colspan="2">
+                     <widget class="QSplitter" name="splitter_2">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <widget class="QWidget" name="layoutWidget_4">
+                       <layout class="QVBoxLayout" name="verticalLayout_6">
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_name_3">
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Committer Name</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_email_3">
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Committer Email</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_time">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Authored Time</string>
-                       </property>
+                      <widget class="QWidget" name="layoutWidget_3">
+                       <layout class="QVBoxLayout" name="verticalLayout_5">
+                        <property name="sizeConstraint">
+                         <enum>QLayout::SetMaximumSize</enum>
+                        </property>
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_date_3">
+                          <property name="maximumSize">
+                           <size>
+                            <width>130</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Commit Date</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="txt_author_time_3">
+                          <property name="maximumSize">
+                           <size>
+                            <width>130</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="readOnly">
+                           <bool>true</bool>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Commit Time</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </widget>
-                 </item>
-                 <item row="5" column="0">
-                  <widget class="QLabel" name="lbl_commit_committer">
-                   <property name="text">
-                    <string>Committer</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="6" column="0" colspan="2">
-                  <widget class="QSplitter" name="splitter_2">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="childrenCollapsible">
-                    <bool>false</bool>
-                   </property>
-                   <widget class="QWidget" name="layoutWidget_4">
-                    <layout class="QVBoxLayout" name="verticalLayout_6">
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_name_3">
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Committer Name</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_email_3">
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Committer Email</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                   <widget class="QWidget" name="layoutWidget_3">
-                    <layout class="QVBoxLayout" name="verticalLayout_5">
-                     <property name="sizeConstraint">
-                      <enum>QLayout::SetDefaultConstraint</enum>
-                     </property>
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_date_3">
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Commit Date</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="txt_author_time_3">
-                       <property name="readOnly">
-                        <bool>true</bool>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Commit Time</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </widget>
-                 </item>
-                 <item row="7" column="0">
-                  <widget class="QLabel" name="lbl_commit_parents">
-                   <property name="text">
-                    <string>Parents</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="7" column="1">
-                  <widget class="QTableView" name="table_parents">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="8" column="0">
-                  <widget class="QLabel" name="lbl_commt_children">
-                   <property name="text">
-                    <string>Children</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="8" column="1">
-                  <widget class="QTableView" name="table_children">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="9" column="0">
-                  <widget class="QLabel" name="lbl_commit_branches">
-                   <property name="text">
-                    <string>Branches</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="9" column="1">
-                  <widget class="QListView" name="list_branches">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="10" column="0" colspan="2">
-                  <widget class="QTextBrowser" name="txt_commit_msg">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
+                     </widget>
+                    </item>
+                    <item row="6" column="0">
+                     <widget class="QLabel" name="lbl_commit_parents">
+                      <property name="text">
+                       <string>Parents</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="6" column="1">
+                     <widget class="QTableView" name="table_parents">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="7" column="0">
+                     <widget class="QLabel" name="lbl_commt_children">
+                      <property name="text">
+                       <string>Children</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="7" column="1">
+                     <widget class="QTableView" name="table_children">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="8" column="0">
+                     <widget class="QLabel" name="lbl_commit_branches">
+                      <property name="text">
+                       <string>Branches</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="8" column="1">
+                     <widget class="QListView" name="list_branches">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="9" column="0" colspan="2">
+                     <widget class="QTextBrowser" name="txt_commit_msg">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>80</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>11</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </widget>
            <widget class="QTabWidget" name="tabs_dashboard_helper">
@@ -568,7 +586,10 @@
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
-           <widget class="QWidget" name="">
+           <property name="childrenCollapsible">
+            <bool>false</bool>
+           </property>
+           <widget class="QWidget" name="layoutWidget">
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
               <layout class="QGridLayout" name="gridLayout_12">
@@ -596,7 +617,7 @@
                   <property name="geometry">
                    <rect>
                     <x>0</x>
-                    <y>-60</y>
+                    <y>0</y>
                     <width>165</width>
                     <height>638</height>
                    </rect>
@@ -620,8 +641,7 @@
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Init</string>
@@ -651,8 +671,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Clone</string>
@@ -688,8 +707,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Add</string>
@@ -719,8 +737,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Commit</string>
@@ -750,8 +767,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Branch</string>
@@ -781,8 +797,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Checkout</string>
@@ -812,8 +827,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Stash</string>
@@ -843,8 +857,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Merge</string>
@@ -874,8 +887,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Rebase</string>
@@ -905,8 +917,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Log</string>
@@ -936,8 +947,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Show</string>
@@ -967,8 +977,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Diff</string>
@@ -998,8 +1007,7 @@ padding: 6px;</string>
                         <enum>Qt::LeftToRight</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">Text-align:left;
-padding: 6px;</string>
+                        <string notr="true">Text-align:left; padding: 6px; padding-left: 12px;</string>
                        </property>
                        <property name="text">
                         <string>Status</string>
@@ -1041,11 +1049,10 @@ padding: 6px;</string>
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>309</width>
-                      <height>544</height>
+                      <width>307</width>
+                      <height>535</height>
                      </rect>
                     </property>
-                    <zorder>label_2</zorder>
                    </widget>
                   </widget>
                  </item>
@@ -1069,7 +1076,7 @@ padding: 6px;</string>
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <item>
               <widget class="QLabel" name="label_3">
@@ -1092,21 +1099,28 @@ padding: 6px;</string>
     </layout>
    </widget>
   </widget>
-  <action name="actionOpen">
+  <action name="action_open">
+   <property name="icon">
+    <iconset resource="resources/images.qrc">
+     <normaloff>:/icons/open_repo.png</normaloff>:/icons/open_repo.png</iconset>
+   </property>
    <property name="text">
-    <string>Select Project Path</string>
+    <string>Open Repository</string>
+   </property>
+   <property name="toolTip">
+    <string>Open a local repository</string>
    </property>
   </action>
-  <action name="actionGitInit">
+  <action name="action_git_init">
    <property name="icon">
     <iconset resource="resources/images.qrc">
      <normaloff>:/icons/init.png</normaloff>:/icons/init.png</iconset>
    </property>
    <property name="text">
-    <string>GitInit</string>
+    <string>Git Init</string>
    </property>
    <property name="toolTip">
-    <string>Initialize a new Git repo</string>
+    <string>Initialize a new Git repository</string>
    </property>
   </action>
   <action name="actionGitAdd">
