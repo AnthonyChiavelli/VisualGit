@@ -1,3 +1,4 @@
+import images_rc
 import logging
 import os
 import sys
