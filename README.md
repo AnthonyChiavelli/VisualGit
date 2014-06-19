@@ -10,6 +10,8 @@ The Canvas is the real shining star of Visual Git. It's a visual representation 
 
 All actions taken on the git repository via the Canvas or Dashboard are logged and displayed, so the user can see how to accomplish the same amazing feats via the command line. We believe that by providing users with a rich set of information about their repository, allowing them to interact intuitively with it, and animating those interactions while simultaneously showing the underlying git commands, we can ease the learning curve of git.
 
+VisualGit is a free, open-source project. If you're interested in contributing, please check out the [Contributions](https://github.com/AnthonyReid99/VisualGit#contributions) section below.
+
 Requirements
 ============
 - [Python 3.4.0](https://www.python.org/download/releases/3.4.0/) (updating to [3.4.1](https://www.python.org/download/releases/3.4.1/) soon)
@@ -19,13 +21,13 @@ Requirements
 
 Installation
 ============
-Python 3 and PyQt4 are required. These can be installed from the Ubuntu repos as "python3" and "python3-qt4" respectively.
+Python 3 and PyQt4 are required. These can be installed from the Ubuntu repos as "python3" and ("python3-qt4" or "python3-pyqt4") respectively.
 
 At release, this project will be available on the python package index. Use pip or easy-install to install it, and the dependencies will be handled for you.
 
 We also plan to release binaries for linux (i386 and amd64), mac, and windows.
 
-Installation instructions coming soon.
+More detailed installation instructions coming soon.
 
 Usage
 =====
@@ -40,6 +42,8 @@ Contributions
 We welcome contributions with open arms! For detailed information on how you can contribute to this project, please read our [Python Conventions Wiki](http://visualgit.readthedocs.org/en/latest/index.html). It has all you need to know about how to prepare your code for submission. Even if we know and like you, if your code isn't up to spec, it's not touching this repository!
 
 We strongly recommend that all contributors (and anyone else that would like to dig a little deeper into git) read [Git Internals](https://github.com/pluralsight/git-internals-pdf/releases) by Scott Chacon. It's a great read, and we'd like to say a big thank you Mr. Chacon for all his amazing git documentation! 
+
+During this phase of the project, it is best if you contact the Reviewers, Anthony Reid (anthonyreid99@gmail.com) and Kahmali Rose (krose72205@gmail.com), before starting any work. We will do our best to respond in a timely manner!
 
 Communication
 =============
@@ -79,10 +83,8 @@ Features
     - Command output pane
     - Menus
     - Git API interactions
-    - Correct resizing behavior on all UI components
     - Staging area displayed
 - LocalRepository
-    - Get tags (lightweight and annotated)
     - File modification event listener for refresh alert
 - Git API (our python library for running git commands)
     - Return all pertinent, deserialized data, including error messages
