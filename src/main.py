@@ -1,3 +1,5 @@
+from PyQt4.QtCore import pyqtSlot
+from PyQt4.QtGui import QFileDialog, QAction, QIcon, QMenuBar, QKeySequence
 import images_rc
 import logging
 import os
@@ -5,30 +7,86 @@ import sys
 from PyQt4 import QtGui, QtCore, uic
 from canvas.GGraphicsScene import GGraphicsScene
 from git.LocalRepository import LocalRepository
-
-MAIN_UI_FILE = os.path.join(os.path.dirname(__file__), os.pardir, "ui", "mainwindow.ui")
-TEST_REPOSITORY = os.path.join(os.path.dirname(__file__), os.pardir, "test_repo")
+from mainwindow import Ui_MainWindow
 
 
-class TestApp(QtGui.QMainWindow):
+class VisualGit(QtGui.QMainWindow):
+    """
+    The main application window
+
+    Attributes:
+        open_repos: A map of absolute paths to open LocalRepositories_
+    """
 
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
 
-        # Load and display UI file
-        self.ui = uic.loadUi(MAIN_UI_FILE)
-        self.ui.show()
+        # Load UI
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self._connect_signals_to_slots()
 
-        # Test getting the commit history for a local repository
-        test_repo = LocalRepository(TEST_REPOSITORY)
-        root_commit = test_repo.get_commit_graph()
-        branches = test_repo.branches
+        # Initialize attributes
+        self.open_repos = {}
 
-        # Create a QGraphicsScene, attach it to our graphics view,
-        # and send it the root commit to render
-        q_graphics_scene = GGraphicsScene()
-        self.ui.graphicsView.setScene(q_graphics_scene)
-        # q_graphics_scene.render_scene(root_commit, branches)
+    def _connect_signals_to_slots(self):
+        """
+        Connect all signals to their corresponding slots
+        """
+
+        # Connect action signals to their slots
+        self.ui.action_open.triggered.connect(self._open_repo)
+
+        # Connect all other signals to their slots
+        self.ui.tabs_canvas.tabCloseRequested.connect(self._close_canvas_tab)
+
+    @pyqtSlot()
+    def _open_repo(self):
+        """
+        Prompt the user to select a local git repository to open
+        """
+
+        # Prompt the user to select a local repo with a file chooser dialog
+        repo_path = QFileDialog.getExistingDirectory(self, "Open a Local Git Repository",
+                                                     options=QFileDialog.ShowDirsOnly)
+        if repo_path:
+            # If the selected repo is not already open
+            if repo_path not in self.open_repos:
+                # Get commit history and branches for selected repository
+                repo = LocalRepository(repo_path)
+                root_commit = repo.get_commit_graph()
+                branches = repo.branches
+
+                # Add selected repo to the set of open repos
+                self.open_repos[repo_path] = repo
+
+                # Add a new Canvas tab for the repo
+                canvas = QtGui.QGraphicsView()
+                canvas.repo_path = repo_path
+                repo_name = repo_path.rsplit("/", 1)[1]
+                index = self.ui.tabs_canvas.addTab(canvas, repo_name)
+                self.ui.tabs_canvas.widget(index).setStatusTip(repo_path)
+
+                # Display repo's commit graph
+                q_graphics_scene = GGraphicsScene()
+                canvas.setScene(q_graphics_scene)
+                q_graphics_scene.render_scene(root_commit, branches)
+                self.ui.tabs_canvas.setCurrentWidget(canvas)
+            else:
+                # Show existing tab containing selected repo
+                for i in range(0, self.ui.tabs_canvas.count()):
+                    if repo_path == self.ui.tabs_canvas.widget(i).repo_path:
+                        self.ui.tabs_canvas.setCurrentIndex(i)
+
+    @pyqtSlot(int)
+    def _close_canvas_tab(self, index):
+        """
+        Close the Canvas tab at the given index and it's corresponding
+        LocalRepository_
+        """
+
+        self.open_repos.pop(self.ui.tabs_canvas.widget(index).repo_path)
+        self.ui.tabs_canvas.removeTab(index)
 
 
 def init_loggers():
@@ -87,7 +145,8 @@ if __name__ == "__main__":
 
     # Begin the qt application and main window
     app = QtGui.QApplication(sys.argv)
-    win = TestApp()
+    win = VisualGit()
+    win.show()
 
     # Exit will error code from app
     sys.exit(app.exec_())
