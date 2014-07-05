@@ -26,6 +26,9 @@
       <property name="currentIndex">
        <number>-1</number>
       </property>
+      <property name="elideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
       <property name="tabsClosable">
        <bool>true</bool>
       </property>
@@ -222,11 +225,20 @@
                     </item>
                     <item row="1" column="1">
                      <widget class="QLineEdit" name="txt_commit_sha">
+                      <property name="layoutDirection">
+                       <enum>Qt::LeftToRight</enum>
+                      </property>
                       <property name="maxLength">
                        <number>40</number>
                       </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
                       <property name="readOnly">
                        <bool>true</bool>
+                      </property>
+                      <property name="cursorMoveStyle">
+                       <enum>Qt::LogicalMoveStyle</enum>
                       </property>
                      </widget>
                     </item>
@@ -251,6 +263,9 @@
                        <layout class="QVBoxLayout" name="verticalLayout_2">
                         <item>
                          <widget class="QLineEdit" name="txt_author_name">
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
                           <property name="readOnly">
                            <bool>true</bool>
                           </property>
@@ -261,6 +276,9 @@
                         </item>
                         <item>
                          <widget class="QLineEdit" name="txt_author_email">
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
                           <property name="readOnly">
                            <bool>true</bool>
                           </property>
@@ -290,6 +308,9 @@
                             <height>0</height>
                            </size>
                           </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
                           <property name="readOnly">
                            <bool>true</bool>
                           </property>
@@ -305,6 +326,9 @@
                             <width>130</width>
                             <height>16777215</height>
                            </size>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
                           </property>
                           <property name="readOnly">
                            <bool>true</bool>
@@ -333,7 +357,10 @@
                       <widget class="QWidget" name="layoutWidget_4">
                        <layout class="QVBoxLayout" name="verticalLayout_6">
                         <item>
-                         <widget class="QLineEdit" name="txt_author_name_3">
+                         <widget class="QLineEdit" name="txt_committer_name">
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
                           <property name="readOnly">
                            <bool>true</bool>
                           </property>
@@ -343,7 +370,10 @@
                          </widget>
                         </item>
                         <item>
-                         <widget class="QLineEdit" name="txt_author_email_3">
+                         <widget class="QLineEdit" name="txt_committer_email">
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
                           <property name="readOnly">
                            <bool>true</bool>
                           </property>
@@ -360,12 +390,15 @@
                          <enum>QLayout::SetMaximumSize</enum>
                         </property>
                         <item>
-                         <widget class="QLineEdit" name="txt_author_date_3">
+                         <widget class="QLineEdit" name="txt_commit_date">
                           <property name="maximumSize">
                            <size>
                             <width>130</width>
                             <height>16777215</height>
                            </size>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
                           </property>
                           <property name="readOnly">
                            <bool>true</bool>
@@ -376,12 +409,15 @@
                          </widget>
                         </item>
                         <item>
-                         <widget class="QLineEdit" name="txt_author_time_3">
+                         <widget class="QLineEdit" name="txt_commit_time">
                           <property name="maximumSize">
                            <size>
                             <width>130</width>
                             <height>16777215</height>
                            </size>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
                           </property>
                           <property name="readOnly">
                            <bool>true</bool>
@@ -630,7 +666,7 @@
                         <string>Init</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -660,7 +696,7 @@
                         <string>Clone</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -696,7 +732,7 @@
                         <string>Add</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -726,7 +762,7 @@
                         <string>Commit</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -756,7 +792,7 @@
                         <string>Branch</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -786,7 +822,7 @@
                         <string>Checkout</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -816,7 +852,7 @@
                         <string>Stash</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -846,7 +882,7 @@
                         <string>Merge</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -876,7 +912,7 @@
                         <string>Rebase</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -906,7 +942,7 @@
                         <string>Log</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -936,7 +972,7 @@
                         <string>Show</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -966,7 +1002,7 @@
                         <string>Diff</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -996,7 +1032,7 @@
                         <string>Status</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources/images.qrc">
+                        <iconset resource="images/images.qrc">
                          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                        </property>
                        <property name="flat">
@@ -1090,13 +1126,13 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="action_open"/>
   </widget>
   <action name="action_open">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/open_repo.png</normaloff>:/icons/open_repo.png</iconset>
    </property>
    <property name="text">
@@ -1111,7 +1147,7 @@
   </action>
   <action name="action_git_init">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/init.png</normaloff>:/icons/init.png</iconset>
    </property>
    <property name="text">
@@ -1123,7 +1159,7 @@
   </action>
   <action name="actionGitAdd">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
    </property>
    <property name="text">
@@ -1135,7 +1171,7 @@
   </action>
   <action name="actionGitMerge">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/merge.png</normaloff>:/icons/merge.png</iconset>
    </property>
    <property name="text">
@@ -1147,7 +1183,7 @@
   </action>
   <action name="actionGitCommit">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
    </property>
    <property name="text">
@@ -1159,7 +1195,7 @@
   </action>
   <action name="actionGitBranch">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset>
      <normaloff>:/icons/Branch</normaloff>:/icons/Branch</iconset>
    </property>
    <property name="text">
@@ -1209,7 +1245,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/revert.png</normaloff>:/icons/revert.png</iconset>
    </property>
    <property name="text">
@@ -1242,7 +1278,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/push.png</normaloff>:/icons/push.png</iconset>
    </property>
    <property name="text">
@@ -1257,7 +1293,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/pull.png</normaloff>:/icons/pull.png</iconset>
    </property>
    <property name="text">
@@ -1285,7 +1321,7 @@
   </action>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
    </property>
    <property name="text">
@@ -1297,7 +1333,7 @@
   </action>
   <action name="actionOpenRepo">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/open_repo.png</normaloff>:/icons/open_repo.png</iconset>
    </property>
    <property name="text">
@@ -1312,7 +1348,7 @@
   </action>
   <action name="actionGitCheckout">
    <property name="icon">
-    <iconset resource="resources/images.qrc">
+    <iconset resource="images/images.qrc">
      <normaloff>:/icons/checkout_branch.png</normaloff>:/icons/checkout_branch.png</iconset>
    </property>
    <property name="text">
@@ -1325,7 +1361,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="resources/images.qrc"/>
+  <include location="images/images.qrc"/>
  </resources>
  <connections/>
 </ui>

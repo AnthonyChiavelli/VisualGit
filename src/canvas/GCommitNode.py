@@ -143,6 +143,11 @@ class GCommitNode(QtGui.QGraphicsItem):
             if self.scene():
                 self.scene().update()
 
+        elif change == QtGui.QGraphicsItem.ItemSelectedChange:
+            # If this node is selected
+            if p_object:
+                self.scene().commitnode_selected.emit(self.commit)
+
         # Propagate along the event
         return super().itemChange(change, p_object)
 

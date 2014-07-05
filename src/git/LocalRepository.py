@@ -192,7 +192,7 @@ class LocalRepository():
                         author_email = words[-3].strip("<>")
                         date_authored = datetime.fromtimestamp(int(words[-2]))
                         commit.author = GitUser(author_name, author_email)
-                        commit.author_date = date_authored
+                        commit.date_authored = date_authored
                     if keyword == "committer":
                         # Get the committer and date committed
                         committer_name = " ".join(words[1:-3])

@@ -18,9 +18,9 @@ class Commit(GitObject):
             commit can have zero or more children.
         author: The GitUser that originally created this commit.
         committer: The GitUser that last applied this commit.
-        author_date: The date and time this commit was originally
+        date_authored: The date and time this commit was originally
             created.
-        commit_date: The date and time this commit was last applied.
+        date_committed: The date and time this commit was last applied.
         message: A string typically containing a description of the
             changes made since the last commit. The common formatting
             convention is "50/72," named after the 50 character limit
@@ -34,7 +34,7 @@ class Commit(GitObject):
         self.parents = []
         self.children = []
         self.author = None
-        self.author_date = None
+        self.date_authored = None
         self.committer = None
         self.date_committed = None
         self.message = None

@@ -1,14 +1,6 @@
 from PyQt4 import QtGui
 
-# Constants defining line attachment strategies
 from PyQt4.QtCore import QLineF, QPointF
-
-ATTACH_MODE_TOP = 1
-ATTACH_MODE_BOTTOM = 2
-ATTACH_MODE_LEFT = 4
-ATTACH_MODE_RIGHT = 8
-ATTACH_MODE_AUTO_CENTER = 16
-ATTACH_MODE_SMOOTH = 32
 
 
 class GConnectionLine(QtGui.QGraphicsLineItem):
@@ -21,21 +13,29 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
     which of the following attachment strategies is chosen for the
     source and destination:
 
-    canvas.GConnectionLine.ATTACH_MODE_TOP
-    canvas.GConnectionLine.ATTACH_MODE_BOTTOM
-    canvas.GConnectionLine.ATTACH_MODE_LEFT
-    canvas.GConnectionLine.ATTACH_MODE_RIGHT
+    ATTACH_MODE_TOP
+    ATTACH_MODE_BOTTOM
+    ATTACH_MODE_LEFT
+    ATTACH_MODE_RIGHT
         The line will attach to the middle of the top/bottom/left/right
         face of the node regardless of where the opposite node is
 
-    canvas.GConnectionLine.ATTACH_MODE_AUTO_CENTER
+    ATTACH_MODE_AUTO_CENTER
         The line will attach to the middle of the face that the
         opposite node is facing.
 
-    canvas.GConnectionLine.ATTACH_MODE_SMOOTH
+    ATTACH_MODE_SMOOTH
         The line will attach to the point along the border nearest
         the center of the opposite node
     """
+
+    # Constants defining line attachment strategies
+    ATTACH_MODE_TOP = 1
+    ATTACH_MODE_BOTTOM = 2
+    ATTACH_MODE_LEFT = 4
+    ATTACH_MODE_RIGHT = 8
+    ATTACH_MODE_AUTO_CENTER = 16
+    ATTACH_MODE_SMOOTH = 32
 
     def __init__(self, origin, origin_attach_mode, destination, destination_attach_mode):
         """
@@ -117,7 +117,7 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
 
         # Smooth mode: Attachment point will maintain minimum distance
         # to the center of the other node
-        if attach_mode == ATTACH_MODE_SMOOTH:
+        if attach_mode == self.ATTACH_MODE_SMOOTH:
 
             # If other node is below us
             if other_node_top >= node_bottom:
@@ -157,7 +157,7 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
 
         # Attachment point will follow center of other node similar to
         # smooth mode, but will snap to the center points of our faces
-        if attach_mode == ATTACH_MODE_AUTO_CENTER:
+        if attach_mode == self.ATTACH_MODE_AUTO_CENTER:
 
              # If other node is below us
             if other_node_top >= node_bottom:
@@ -182,14 +182,14 @@ class GConnectionLine(QtGui.QGraphicsLineItem):
         # Static attachment modes: attachment will occur at the
         # center of the specified face and remain there regardless of
         # movement
-        if attach_mode == ATTACH_MODE_BOTTOM:
+        if attach_mode == self.ATTACH_MODE_BOTTOM:
             return QPointF(node_x_mid, node_bottom)
 
-        if attach_mode == ATTACH_MODE_TOP:
+        if attach_mode == self.ATTACH_MODE_TOP:
             return QPointF(node_x_mid, node_top)
 
-        if attach_mode == ATTACH_MODE_LEFT:
+        if attach_mode == self.ATTACH_MODE_LEFT:
             return QPointF(node_left, node_y_mid)
 
-        if attach_mode == ATTACH_MODE_RIGHT:
+        if attach_mode == self.ATTACH_MODE_RIGHT:
             return QPointF(node_right, node_y_mid)

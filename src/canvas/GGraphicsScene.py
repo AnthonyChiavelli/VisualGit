@@ -1,10 +1,14 @@
+from PyQt4.QtCore import pyqtSignal
 from PyQt4.QtGui import QBrush
 from canvas.GBranchLabel import GBranchLabel
-import canvas.GConnectionLine
 from canvas import rendering_algorithms
 from PyQt4 import QtGui
 from canvas.GCommitArrow import GCommitArrow
 from canvas.GCommitNode import GCommitNode
+from canvas.GConnectionLine import GConnectionLine
+
+from git.Commit import Commit
+
 
 # Graphics properties
 CANVAS_BACKGROUND_COLOR = QtGui.QColor(232, 232, 232)
@@ -21,7 +25,14 @@ class GGraphicsScene(QtGui.QGraphicsScene):
     A GGraphicsScene hosts GCommitNodes, GBranchLabels, GCommitArrows,
     and other GGraphicsItem subclasses. It contains the graphs that
     represent a repository.
+
+    Signals:
+        commitnode_selected(Commit):
+            The CommitNode for the given commit was selected
     """
+
+    # Define Canvas signals
+    commitnode_selected = pyqtSignal(Commit)
 
     def __init__(self):
         """
@@ -36,6 +47,7 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         # A mapping of sha to GCommitNode to avoid redrawing the same
         # node twice (as it may be a child of multiple parents)
         self._sha_to_node = {}
+
 
     def render_scene(self, commit, branches):
         """
@@ -85,9 +97,9 @@ class GGraphicsScene(QtGui.QGraphicsScene):
         for child in g_commit_node.children:
             # Render an arrow from child to parent
             commit_arrow = GCommitArrow(g_commit_node,
-                                        canvas.GConnectionLine.ATTACH_MODE_SMOOTH,
+                                        GConnectionLine.ATTACH_MODE_SMOOTH,
                                         child,
-                                        canvas.GConnectionLine.ATTACH_MODE_AUTO_CENTER)
+                                        GConnectionLine.ATTACH_MODE_AUTO_CENTER)
             self.addItem(commit_arrow)
 
             # And recursively render child
@@ -151,10 +163,10 @@ class GGraphicsScene(QtGui.QGraphicsScene):
             corresponding_commit = self._sha_to_node[branch.commit_sha]
             new_branch_label.setPos(corresponding_commit.pos().x() + 150,
                                     corresponding_commit.pos().y())
-            new_connection_line = canvas.GConnectionLine.GConnectionLine(corresponding_commit,
-                                                     canvas.GConnectionLine.ATTACH_MODE_SMOOTH,
-                                                     new_branch_label,
-                                                     canvas.GConnectionLine.ATTACH_MODE_LEFT)
+            new_connection_line = GConnectionLine(corresponding_commit,
+                                                  GConnectionLine.ATTACH_MODE_SMOOTH,
+                                                  new_branch_label,
+                                                  GConnectionLine.ATTACH_MODE_LEFT)
 
             # Associate it with its commit corresponding_commit
             corresponding_commit.add_branch_label(new_branch_label)

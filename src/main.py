@@ -1,10 +1,10 @@
 from PyQt4.QtCore import pyqtSlot
-from PyQt4.QtGui import QFileDialog, QAction, QIcon, QMenuBar, QKeySequence
-import images_rc
+from PyQt4.QtGui import QFileDialog
+from git.Commit import Commit
 import logging
 import os
 import sys
-from PyQt4 import QtGui, QtCore, uic
+from PyQt4 import QtGui
 from canvas.GGraphicsScene import GGraphicsScene
 from git.LocalRepository import LocalRepository
 from mainwindow import Ui_MainWindow
@@ -49,6 +49,7 @@ class VisualGit(QtGui.QMainWindow):
         # Prompt the user to select a local repo with a file chooser dialog
         repo_path = QFileDialog.getExistingDirectory(self, "Open a Local Git Repository",
                                                      options=QFileDialog.ShowDirsOnly)
+        # Open the selected local repo
         if repo_path:
             # If the selected repo is not already open
             if repo_path not in self.open_repos:
@@ -56,6 +57,9 @@ class VisualGit(QtGui.QMainWindow):
                 repo = LocalRepository(repo_path)
                 root_commit = repo.get_commit_graph()
                 branches = repo.branches
+
+                # Show the root commit's details by default
+                self._show_commit_details(root_commit)
 
                 # Add selected repo to the set of open repos
                 self.open_repos[repo_path] = repo
@@ -67,11 +71,14 @@ class VisualGit(QtGui.QMainWindow):
                 index = self.ui.tabs_canvas.addTab(canvas, repo_name)
                 self.ui.tabs_canvas.widget(index).setStatusTip(repo_path)
 
-                # Display repo's commit graph
+                # Display repo's commit graph on a new Canvas
                 q_graphics_scene = GGraphicsScene()
                 canvas.setScene(q_graphics_scene)
                 q_graphics_scene.render_scene(root_commit, branches)
                 self.ui.tabs_canvas.setCurrentWidget(canvas)
+
+                # Setup signals for the Canvas
+                q_graphics_scene.commitnode_selected.connect(self._show_commit_details)
             else:
                 # Show existing tab containing selected repo
                 for i in range(0, self.ui.tabs_canvas.count()):
@@ -87,6 +94,26 @@ class VisualGit(QtGui.QMainWindow):
 
         self.open_repos.pop(self.ui.tabs_canvas.widget(index).repo_path)
         self.ui.tabs_canvas.removeTab(index)
+
+    @pyqtSlot(Commit)
+    def _show_commit_details(self, commit):
+        """
+        Display the details of the given commit in the Commit Explorer
+
+        :param commit: The Commit to display
+        """
+
+        self.ui.lbl_commit_msg_header.setText(commit.message.splitlines()[0])
+        self.ui.txt_commit_sha.setText(commit.sha.name)
+        self.ui.txt_author_name.setText(commit.author.name)
+        self.ui.txt_author_email.setText(commit.author.email)
+        self.ui.txt_author_date.setText(commit.date_authored.strftime("%x"))
+        self.ui.txt_author_time.setText(commit.date_authored.strftime("%X"))
+        self.ui.txt_committer_name.setText(commit.committer.name)
+        self.ui.txt_committer_email.setText(commit.committer.email)
+        self.ui.txt_commit_date.setText(commit.date_committed.strftime("%x"))
+        self.ui.txt_commit_time.setText(commit.date_committed.strftime("%X"))
+        self.ui.txt_commit_msg.setText(commit.message)
 
 
 def init_loggers():
