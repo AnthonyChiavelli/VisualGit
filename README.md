@@ -1,5 +1,7 @@
 Visual Git
 ==========
+![Visual Git Main Window](http://i.imgur.com/L2AQEMN.png)
+
 View and interact with your git repositories like never before!
 
 At it's core, Visual Git is a learning tool for git. We believe that everyone that learns git, loves git. So it's our hope to provide a tool to ease that learning process, and get folks to the git lovin' faster, and maybe funner.
